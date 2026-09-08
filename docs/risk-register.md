@@ -1,4 +1,3 @@
-</>Markdown
 # Risk Register — QA E-Commerce Platform
 
 ## 1. Objetivo

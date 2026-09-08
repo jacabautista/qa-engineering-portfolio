@@ -1,4 +1,3 @@
-</>Markdown
 # Project Charter — QA E-Commerce Platform
 
 ## 1. Información general

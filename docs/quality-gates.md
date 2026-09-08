@@ -1,4 +1,3 @@
-</>Markdown
 # Quality Gates
 
 ## Gate 1 — QA Entry
