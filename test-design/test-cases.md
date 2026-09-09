@@ -866,3 +866,581 @@ These gaps should be clarified before complete cart coverage and automation are 
 | TC-017    | Total calculation      | Business Rule            | Critical |
 | TC-018    | Quantity recalculation | Business Rule            | Critical |
 | TC-019    | Removal recalculation  | Business Rule            | Critical |
+
+# 15. Checkout Test Cases
+
+## TC-020 — Checkout with Valid Required Information
+
+**Requirement:** FR-005
+**Acceptance Criteria:** AC-014
+**Test Scenario:** TS-014
+**Priority:** Critical
+**Test Type:** Functional / Positive
+**Test Design Technique:** Decision Table
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Application is available.
+* User has at least one valid product in the shopping cart.
+* Product is available.
+* Checkout page is accessible.
+
+### Test Data
+
+| Field                | Value                  |
+| -------------------- | ---------------------- |
+| Customer Information | Valid                  |
+| Shipping Information | Valid                  |
+| Cart State           | Contains valid product |
+
+### Test Steps
+
+| Step | Action                                         | Expected Result                  |
+| ---- | ---------------------------------------------- | -------------------------------- |
+| 1    | Open the shopping cart                         | Cart is displayed                |
+| 2    | Continue to checkout                           | Checkout page is displayed       |
+| 3    | Enter valid customer information               | Information is accepted          |
+| 4    | Enter valid shipping information               | Information is accepted          |
+| 5    | Continue checkout                              | Checkout validation succeeds     |
+| 6    | Verify navigation to the next transaction step | User can continue toward payment |
+
+### Expected Result
+
+The user can continue the checkout process when all required information is valid.
+
+### Postconditions
+
+* Checkout information remains available for the transaction.
+
+---
+
+## TC-021 — Checkout with Missing Customer Information
+
+**Requirement:** FR-005
+**Acceptance Criteria:** AC-013 / AC-015
+**Test Scenario:** TS-013 / TS-015
+**Priority:** High
+**Test Type:** Validation / Negative
+**Test Design Technique:** Decision Table
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Shopping cart contains at least one valid product.
+* Checkout page is accessible.
+
+### Test Data
+
+| Condition            | Value          |
+| -------------------- | -------------- |
+| Customer Information | Missing        |
+| Shipping Information | Valid          |
+| Cart State           | Contains items |
+
+### Expected Result
+
+The checkout process does not continue and required customer information is identified.
+
+---
+
+## TC-022 — Checkout with Missing Shipping Information
+
+**Requirement:** FR-005
+**Acceptance Criteria:** AC-013 / AC-015
+**Test Scenario:** TS-013 / TS-015
+**Priority:** High
+**Test Type:** Validation / Negative
+**Test Design Technique:** Decision Table
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Test Data
+
+| Condition            | Value          |
+| -------------------- | -------------- |
+| Customer Information | Valid          |
+| Shipping Information | Missing        |
+| Cart State           | Contains items |
+
+### Expected Result
+
+The checkout process does not continue when required shipping information is missing.
+
+---
+
+## TC-023 — Checkout with Invalid Customer Information
+
+**Requirement:** FR-005
+**Acceptance Criteria:** AC-015
+**Test Scenario:** TS-015
+**Priority:** High
+**Test Type:** Functional / Validation / Negative
+**Test Design Technique:** Equivalence Partitioning
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Checkout page is accessible.
+* Shopping cart contains a valid product.
+
+### Test Data
+
+| Condition            | Value          |
+| -------------------- | -------------- |
+| Customer Information | Invalid        |
+| Shipping Information | Valid          |
+| Cart State           | Contains items |
+
+### Expected Result
+
+Invalid customer information prevents the checkout flow from continuing.
+
+---
+
+## TC-024 — Checkout with Invalid Shipping Information
+
+**Requirement:** FR-005
+**Acceptance Criteria:** AC-015
+**Test Scenario:** TS-015
+**Priority:** High
+**Test Type:** Functional / Validation / Negative
+**Test Design Technique:** Equivalence Partitioning
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Test Data
+
+| Condition            | Value          |
+| -------------------- | -------------- |
+| Customer Information | Valid          |
+| Shipping Information | Invalid        |
+| Cart State           | Contains items |
+
+### Expected Result
+
+Invalid shipping information prevents the transaction from continuing.
+
+---
+
+## TC-025 — Checkout with Empty Cart
+
+**Requirement:** FR-004 / FR-005
+**Test Scenario:** TS-015
+**Priority:** Critical
+**Test Type:** Negative / Business Rule
+**Test Design Technique:** Decision Table
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* User can access the application.
+* Shopping cart contains no products.
+
+### Test Data
+
+| Condition            | Value |
+| -------------------- | ----- |
+| Customer Information | Valid |
+| Shipping Information | Valid |
+| Cart State           | Empty |
+
+### Expected Result
+
+The system must not allow a transaction to continue when the shopping cart contains no purchasable products.
+
+> This behavior should be confirmed as an explicit business rule.
+
+---
+
+# 16. Checkout Decision Table
+
+| Rule | Customer Information | Shipping Information | Cart      | Expected Decision |
+| ---- | -------------------- | -------------------- | --------- | ----------------- |
+| R1   | Valid                | Valid                | Has Items | Continue          |
+| R2   | Invalid              | Valid                | Has Items | Reject            |
+| R3   | Valid                | Invalid              | Has Items | Reject            |
+| R4   | Missing              | Valid                | Has Items | Reject            |
+| R5   | Valid                | Missing              | Has Items | Reject            |
+| R6   | Valid                | Valid                | Empty     | Reject            |
+
+---
+
+# 17. Checkout Requirement Gaps
+
+The following rules require clarification before checkout coverage can be considered complete:
+
+* Exact mandatory customer fields.
+* Exact mandatory shipping fields.
+* Accepted formats for customer information.
+* Accepted address formats.
+* Whether checkout requires authentication.
+* Whether guest checkout is supported.
+* Behavior when the cart becomes invalid during checkout.
+* Behavior when product inventory changes during checkout.
+* Behavior when product price changes during checkout.
+* Whether taxes are calculated before or during checkout.
+* Whether shipping costs are calculated before payment.
+* Whether coupons or promotional codes can modify the checkout total.
+
+---
+
+# 18. Checkout Coverage Summary
+
+| Test Case | Main Validation       | Technique                      | Priority |
+| --------- | --------------------- | ------------------------------ | -------- |
+| TC-020    | Valid checkout        | Decision Table                 | Critical |
+| TC-021    | Missing customer data | Decision Table                 | High     |
+| TC-022    | Missing shipping data | Decision Table                 | High     |
+| TC-023    | Invalid customer data | Equivalence Partitioning       | High     |
+| TC-024    | Invalid shipping data | Equivalence Partitioning       | High     |
+| TC-025    | Empty cart            | Decision Table / Business Rule | Critical |
+
+# 19. Payment Test Cases
+
+## TC-026 — Successful Payment
+
+**Requirement:** FR-006
+**Acceptance Criteria:** AC-016
+**Test Scenario:** TS-016
+**Priority:** Critical
+**Test Type:** Functional / Integration / Positive
+**Test Design Technique:** Decision Table
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Shopping cart contains valid products.
+* Checkout information is valid.
+* Payment service is available.
+* Transaction is ready for payment.
+
+### Test Data
+
+| Field            | Value    |
+| ---------------- | -------- |
+| Payment Response | Approved |
+| Cart State       | Valid    |
+| Checkout State   | Valid    |
+
+### Test Steps
+
+| Step | Action                              | Expected Result                    |
+| ---- | ----------------------------------- | ---------------------------------- |
+| 1    | Complete valid checkout information | Checkout validation succeeds       |
+| 2    | Continue to payment                 | Payment step is displayed          |
+| 3    | Submit valid payment information    | Payment request is sent            |
+| 4    | Receive successful payment response | Payment is marked as approved      |
+| 5    | Verify transaction flow             | System continues to order creation |
+
+### Expected Result
+
+An approved payment allows the transaction to continue to successful order creation.
+
+### Postconditions
+
+* Payment transaction is recorded as successful.
+* Transaction can proceed to order creation.
+
+---
+
+## TC-027 — Failed Payment
+
+**Requirement:** FR-006
+**Acceptance Criteria:** AC-017
+**Test Scenario:** TS-017
+**Priority:** Critical
+**Test Type:** Functional / Integration / Negative
+**Test Design Technique:** Decision Table
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Cart and checkout data are valid.
+* Payment step is accessible.
+
+### Test Data
+
+| Field            | Value    |
+| ---------------- | -------- |
+| Payment Response | Declined |
+
+### Test Steps
+
+| Step | Action                                | Expected Result                        |
+| ---- | ------------------------------------- | -------------------------------------- |
+| 1    | Reach the payment step                | Payment interface is available         |
+| 2    | Submit payment information            | Payment request is processed           |
+| 3    | Simulate or receive declined response | Payment is rejected                    |
+| 4    | Verify transaction status             | Transaction does not become successful |
+| 5    | Verify order state                    | Successful order is not generated      |
+
+### Expected Result
+
+A declined payment prevents successful order creation and appropriate failure feedback is provided.
+
+### Postconditions
+
+* No successful payment exists.
+* No confirmed order should exist.
+
+---
+
+## TC-028 — Payment Failure Must Not Create Order
+
+**Requirement:** FR-006 / FR-007
+**Acceptance Criteria:** AC-017
+**Test Scenario:** TS-026
+**Priority:** Critical
+**Test Type:** Integration / Negative / Business Rule
+**Test Design Technique:** Decision Table
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Checkout is valid.
+* Payment can be submitted.
+
+### Test Data
+
+| Payment | Expected Order State |
+| ------- | -------------------- |
+| Failed  | Not Created          |
+
+### Expected Result
+
+A failed payment must not result in a confirmed successful order.
+
+### Postconditions
+
+* No successful order exists for the failed payment transaction.
+
+---
+
+# 20. Order Creation Test Cases
+
+## TC-029 — Create Order After Successful Payment
+
+**Requirement:** FR-007
+**Acceptance Criteria:** AC-018
+**Test Scenario:** TS-018
+**Priority:** Critical
+**Test Type:** Functional / Integration / Positive
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Valid cart exists.
+* Checkout is complete.
+* Payment has been successfully approved.
+
+### Test Steps
+
+| Step | Action                             | Expected Result                     |
+| ---- | ---------------------------------- | ----------------------------------- |
+| 1    | Complete successful payment        | Payment is approved                 |
+| 2    | Allow transaction flow to continue | Order creation is initiated         |
+| 3    | Verify order result                | New order is created                |
+| 4    | Verify order identifier            | Unique order reference is available |
+| 5    | Verify order status                | Order has expected initial status   |
+
+### Expected Result
+
+A valid order is created after successful payment.
+
+### Postconditions
+
+* Order exists in the system.
+
+---
+
+## TC-030 — Validate Order Information
+
+**Requirement:** FR-007
+**Acceptance Criteria:** AC-019
+**Test Scenario:** TS-019
+**Priority:** Critical
+**Test Type:** Functional / Data Validation
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Successful order exists.
+
+### Expected Order Data
+
+The order should correctly represent transaction information including, where applicable:
+
+* Order identifier
+* Customer information
+* Purchased products
+* Product quantities
+* Unit prices
+* Transaction total
+* Payment result
+* Order status
+
+### Expected Result
+
+Order information matches the transaction that generated the order.
+
+---
+
+## TC-031 — Persist Successful Order in Database
+
+**Requirement:** FR-007
+**Acceptance Criteria:** AC-020
+**Test Scenario:** TS-020
+**Priority:** Critical
+**Test Type:** Database / Integration
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Successful order has been generated.
+* Database is available.
+* Test environment permits database validation.
+
+### Test Steps
+
+| Step | Action                            | Expected Result                     |
+| ---- | --------------------------------- | ----------------------------------- |
+| 1    | Complete a successful transaction | Order is generated                  |
+| 2    | Capture the order identifier      | Identifier is available             |
+| 3    | Query the order persistence layer | Corresponding order record is found |
+| 4    | Compare stored order information  | Stored data matches transaction     |
+| 5    | Verify order status               | Expected status is persisted        |
+
+### Expected Result
+
+The successfully created order is correctly persisted and can be retrieved using its unique identifier.
+
+### Postconditions
+
+* Order remains stored in the database.
+
+---
+
+## TC-032 — Validate Order Data Integrity
+
+**Requirement:** FR-007
+**Test Scenario:** TS-027
+**Priority:** Critical
+**Test Type:** Database / Integration / Data Integrity
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Successful transaction and order exist.
+* Database access for test validation is available.
+
+### Validation Model
+
+```text
+Application Transaction
+        ↓
+Order Service
+        ↓
+Database
+```
+
+The following values should remain consistent across layers:
+
+| Transaction Field | Database Field |
+| ----------------- | -------------- |
+| Order ID          | Order ID       |
+| Customer          | Customer       |
+| Product           | Product        |
+| Quantity          | Quantity       |
+| Unit Price        | Unit Price     |
+| Total             | Total          |
+| Status            | Status         |
+
+### Expected Result
+
+Order information stored in the database matches the transaction produced by the application without unexpected data corruption or inconsistency.
+
+---
+
+# 21. Payment and Order Decision Table
+
+| Rule | Checkout Valid | Payment | Order Created | Persisted           | Expected Result            |
+| ---- | -------------- | ------- | ------------- | ------------------- | -------------------------- |
+| R1   | Yes            | Success | Yes           | Yes                 | Transaction succeeds       |
+| R2   | Yes            | Failed  | No            | No successful order | Payment rejected           |
+| R3   | No             | —       | No            | No                  | Payment should not proceed |
+| R4   | Yes            | Success | No            | No                  | System/integration defect  |
+| R5   | Yes            | Success | Yes           | No                  | Persistence defect         |
+
+---
+
+# 22. Critical E2E Assertions
+
+The following cross-layer rules are considered critical:
+
+1. Successful payment must lead to a valid order.
+2. Failed payment must not create a successful order.
+3. Successful order must be persisted.
+4. Persisted data must match the transaction.
+5. Order totals must remain consistent between cart, checkout, order and database.
+6. Order status must represent the real transaction state.
+
+---
+
+# 23. Payment and Order Requirement Gaps
+
+The following rules require clarification:
+
+* Supported payment methods.
+* Payment timeout behavior.
+* Retry behavior after payment failure.
+* Duplicate payment protection.
+* Duplicate order protection.
+* Payment idempotency behavior.
+* Order identifier format.
+* Initial order status.
+* Order status transitions.
+* Transaction rollback behavior.
+* Behavior when payment succeeds but order creation fails.
+* Behavior when order is created but database persistence fails.
+* Behavior when external payment confirmation is delayed.
+* Currency and rounding rules.
+* Payment audit requirements.
+
+---
+
+# 24. Payment and Order Coverage Summary
+
+| Test Case | Validation                | Layer               | Priority |
+| --------- | ------------------------- | ------------------- | -------- |
+| TC-026    | Successful payment        | Integration         | Critical |
+| TC-027    | Failed payment            | Integration         | Critical |
+| TC-028    | Failed payment → no order | E2E / Business Rule | Critical |
+| TC-029    | Successful order creation | Integration         | Critical |
+| TC-030    | Order information         | Functional / Data   | Critical |
+| TC-031    | Order persistence         | Database            | Critical |
+| TC-032    | Data integrity            | Database / E2E      | Critical |
