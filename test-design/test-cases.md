@@ -1444,3 +1444,383 @@ The following rules require clarification:
 | TC-030    | Order information         | Functional / Data   | Critical |
 | TC-031    | Order persistence         | Database            | Critical |
 | TC-032    | Data integrity            | Database / E2E      | Critical |
+# 25. Email Notification Test Cases
+
+## TC-033 — Send Order Confirmation After Successful Order
+
+**Requirement:** FR-008
+**Acceptance Criteria:** AC-021
+**Test Scenario:** TS-021
+**Priority:** High
+**Test Type:** Integration / Positive
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* A valid customer exists.
+* Customer has a valid email address.
+* Successful payment has completed.
+* Successful order has been created.
+* Email service is available.
+
+### Test Data
+
+| Field          | Value            |
+| -------------- | ---------------- |
+| Customer Email | valid_test_email |
+| Payment Status | Successful       |
+| Order Status   | Created          |
+
+### Test Steps
+
+| Step | Action                                 | Expected Result                                           |
+| ---- | -------------------------------------- | --------------------------------------------------------- |
+| 1    | Complete a successful purchase         | Order is created                                          |
+| 2    | Capture the generated order identifier | Order identifier is available                             |
+| 3    | Wait for notification processing       | Email notification process is triggered                   |
+| 4    | Verify recipient                       | Notification is addressed to the expected customer        |
+| 5    | Verify order reference                 | Correct order identifier is present                       |
+| 6    | Verify notification status             | Order confirmation notification is generated successfully |
+
+### Expected Result
+
+A successful order generates an order confirmation notification for the expected customer.
+
+### Postconditions
+
+* Confirmation notification exists for the generated order.
+
+---
+
+## TC-034 — Do Not Send Confirmation After Failed Payment
+
+**Requirement:** FR-006 / FR-008
+**Test Scenario:** TS-028
+**Priority:** Critical
+**Test Type:** Integration / Negative / Business Rule
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Checkout is valid.
+* Payment transaction can be submitted.
+
+### Test Data
+
+| Payment | Order       | Expected Email |
+| ------- | ----------- | -------------- |
+| Failed  | Not Created | Not Sent       |
+
+### Expected Result
+
+A failed payment must not generate an order confirmation notification.
+
+---
+
+## TC-035 — Do Not Send Confirmation When Order Creation Fails
+
+**Requirement:** FR-007 / FR-008
+**Test Scenario:** TS-028
+**Priority:** Critical
+**Test Type:** Integration / Negative
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Payment has been successfully approved.
+* Order creation can be simulated as failed in the test environment.
+
+### Expected Result
+
+The system must not send a successful order confirmation notification when a valid order has not been successfully created.
+
+> Exact recovery behavior requires clarification.
+
+---
+
+## TC-036 — Validate Confirmation Email Order Information
+
+**Requirement:** FR-007 / FR-008
+**Acceptance Criteria:** AC-019 / AC-021
+**Test Scenario:** TS-019 / TS-021
+**Priority:** High
+**Test Type:** Integration / Data Validation
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Successful order exists.
+* Confirmation notification was generated.
+
+### Data Validation
+
+The notification should contain consistent transaction information, where applicable:
+
+* Order identifier
+* Customer reference
+* Purchased products
+* Product quantities
+* Order total
+* Order status
+
+### Expected Result
+
+The notification information matches the generated order.
+
+---
+
+# 26. Email Requirement Gaps
+
+The following rules require clarification:
+
+* Exact email content.
+* Required email subject.
+* Sender address.
+* Maximum allowed delivery delay.
+* Retry behavior when the email service is unavailable.
+* Number of notification retries.
+* Duplicate email prevention.
+* Whether email failures affect the order status.
+* Whether users can request the notification again.
+* Whether email delivery status must be audited.
+* Whether email notification processing is synchronous or asynchronous.
+
+---
+
+# 27. End-to-End Test Cases
+
+## TC-037 — Complete Successful Purchase E2E
+
+**Requirements:** FR-001 through FR-008
+**Priority:** Critical
+**Test Type:** End-to-End / Regression / Positive
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Business Flow
+
+```text
+Login
+  ↓
+Catalog
+  ↓
+Product Details
+  ↓
+Add to Cart
+  ↓
+Checkout
+  ↓
+Payment Success
+  ↓
+Order Created
+  ↓
+Database Persistence
+  ↓
+Email Confirmation
+```
+
+### Preconditions
+
+* Registered user exists.
+* Product is available.
+* Test payment method can return success.
+* Database is available.
+* Notification service is available.
+
+### Test Steps
+
+| Step | Action                        | Expected Result                        |
+| ---- | ----------------------------- | -------------------------------------- |
+| 1    | Login with valid credentials  | Authentication succeeds                |
+| 2    | Open product catalog          | Products are displayed                 |
+| 3    | Select an available product   | Product details are displayed          |
+| 4    | Add the product to the cart   | Cart contains product                  |
+| 5    | Verify cart total             | Correct total is displayed             |
+| 6    | Complete valid checkout       | Checkout succeeds                      |
+| 7    | Complete successful payment   | Payment is approved                    |
+| 8    | Verify order creation         | Order is created                       |
+| 9    | Capture order identifier      | Unique identifier is available         |
+| 10   | Validate database persistence | Order exists in database               |
+| 11   | Validate persisted values     | Database data matches transaction      |
+| 12   | Validate notification         | Confirmation notification is generated |
+
+### Expected Result
+
+The complete purchase transaction succeeds and produces consistent results across UI, payment, order, database and notification layers.
+
+---
+
+## TC-038 — Failed Payment E2E
+
+**Requirements:** FR-004 / FR-005 / FR-006 / FR-007 / FR-008
+**Priority:** Critical
+**Test Type:** End-to-End / Negative / Regression
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Business Flow
+
+```text
+Cart
+ ↓
+Checkout
+ ↓
+Payment FAILED
+ ↓
+No Successful Order
+ ↓
+No Successful Order Persistence
+ ↓
+No Confirmation Email
+```
+
+### Expected Result
+
+A failed payment stops the successful purchase flow and does not produce a confirmed successful order or order confirmation notification.
+
+---
+
+## TC-039 — Order Persistence Failure E2E
+
+**Requirements:** FR-006 / FR-007 / FR-008
+**Priority:** Critical
+**Test Type:** End-to-End / Integration / Error Handling
+**Automation Candidate:** Conditional
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Payment can successfully complete.
+* Test environment supports simulation of persistence failure.
+
+### Business Flow
+
+```text
+Payment Success
+      ↓
+Order Creation
+      ↓
+Database Failure
+      ↓
+Recovery / Error Handling
+```
+
+### Expected Result
+
+The system handles the persistence failure without incorrectly presenting the transaction as fully completed.
+
+> Exact expected behavior depends on the transaction recovery and rollback strategy.
+
+---
+
+## TC-040 — Duplicate Purchase Submission
+
+**Requirements:** FR-006 / FR-007
+**Priority:** Critical
+**Test Type:** E2E / Integration / Reliability
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Scenario
+
+The same purchase operation is submitted more than once because of retry, network behavior or repeated user action.
+
+### Expected Result
+
+The system should prevent unintended duplicate payment or duplicate order creation according to the defined idempotency strategy.
+
+> Idempotency requirements must be confirmed before the final assertion is implemented.
+
+---
+
+# 28. E2E Critical Assertions
+
+The following rules represent critical business invariants:
+
+1. A customer cannot complete a successful purchase without valid checkout information.
+2. A failed payment must not generate a successful order.
+3. A successful payment should result in the expected order transaction.
+4. A successful order must be correctly persisted.
+5. Stored order information must match the originating transaction.
+6. A successful order should trigger the expected customer notification.
+7. A failed transaction must not generate a successful order confirmation.
+8. Duplicate submission must not cause unintended duplicate financial transactions.
+9. Cart, checkout, order and persisted totals must remain consistent.
+10. Transaction state must remain consistent across system layers.
+
+---
+
+# 29. E2E Coverage Model
+
+```text
+UI
+│
+├── Authentication
+├── Catalog
+├── Product
+├── Cart
+└── Checkout
+        ↓
+API / Services
+│
+├── Authentication Service
+├── Catalog Service
+├── Cart Service
+├── Payment Service
+└── Order Service
+        ↓
+Database
+        ↓
+Notification Service
+        ↓
+Customer
+```
+
+---
+
+# 30. Current Test Case Inventory
+
+| Area            | Test Cases      |
+| --------------- | --------------- |
+| Authentication  | TC-001 – TC-006 |
+| Product Catalog | TC-007 – TC-008 |
+| Product Details | TC-009 – TC-010 |
+| Shopping Cart   | TC-011 – TC-019 |
+| Checkout        | TC-020 – TC-025 |
+| Payment         | TC-026 – TC-028 |
+| Order           | TC-029 – TC-032 |
+| Email           | TC-033 – TC-036 |
+| E2E             | TC-037 – TC-040 |
+
+**Current Total:** 40 test cases
+
+---
+
+# 31. Test Design Completion Criteria
+
+Detailed test design can move to the next phase when:
+
+* Functional requirements have associated coverage.
+* Acceptance criteria can be traced to test scenarios and test cases.
+* Critical positive flows are represented.
+* Critical negative flows are represented.
+* Boundary conditions are identified where applicable.
+* Decision tables are used for important combinations.
+* Integration points are represented.
+* Database validation scenarios are identified.
+* Critical E2E flows are represented.
+* Requirement gaps are documented.
+* Automation candidates are identified.
+* Critical business invariants are documented.
