@@ -537,3 +537,332 @@ The following information is not currently defined in sufficient detail and shou
 * Behavior when a product becomes unavailable after the catalog is loaded.
 * Maximum or minimum allowed product quantity.
 * Expected handling of inconsistent price or inventory information between catalog and product details.
+
+# 11. Shopping Cart Test Cases
+
+## TC-011 — Add Product to Shopping Cart
+
+**Requirement:** FR-004
+**Acceptance Criteria:** AC-009
+**Test Scenario:** TS-009
+**Priority:** Critical
+**Test Type:** Functional / Positive
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Application is available.
+* A valid and available product exists.
+* Shopping cart is accessible.
+
+### Test Data
+
+| Field      | Value             |
+| ---------- | ----------------- |
+| Product    | available_product |
+| Unit Price | 100.00            |
+| Quantity   | 1                 |
+
+### Test Steps
+
+| Step | Action                      | Expected Result                  |
+| ---- | --------------------------- | -------------------------------- |
+| 1    | Select an available product | Product is displayed             |
+| 2    | Add the product to the cart | Add-to-cart operation succeeds   |
+| 3    | Open the shopping cart      | Cart is displayed                |
+| 4    | Verify the selected product | Correct product is present       |
+| 5    | Verify quantity             | Quantity is 1                    |
+| 6    | Verify unit price           | Expected unit price is displayed |
+
+### Expected Result
+
+The selected product is successfully added to the shopping cart with the correct initial quantity and price.
+
+### Postconditions
+
+* Product remains in the shopping cart.
+
+---
+
+## TC-012 — Update Product Quantity to a Valid Value
+
+**Requirement:** FR-004
+**Acceptance Criteria:** AC-010
+**Test Scenario:** TS-010
+**Priority:** High
+**Test Type:** Functional / Positive
+**Test Design Technique:** Equivalence Partitioning
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Product exists in the shopping cart.
+* Initial product quantity is 1.
+
+### Test Data
+
+| Initial Quantity | New Quantity |
+| ---------------: | -----------: |
+|                1 |            2 |
+
+### Test Steps
+
+| Step | Action                      | Expected Result          |
+| ---- | --------------------------- | ------------------------ |
+| 1    | Open the shopping cart      | Cart is displayed        |
+| 2    | Locate the product          | Product is present       |
+| 3    | Change quantity from 1 to 2 | New quantity is accepted |
+| 4    | Apply the quantity update   | Cart is updated          |
+| 5    | Verify quantity             | Quantity displayed is 2  |
+
+### Expected Result
+
+The shopping cart accepts a valid quantity and correctly updates the cart item.
+
+---
+
+## TC-013 — Update Product Quantity to Zero
+
+**Requirement:** FR-004
+**Acceptance Criteria:** AC-010
+**Test Scenario:** TS-024
+**Priority:** High
+**Test Type:** Functional / Negative / Boundary
+**Test Design Technique:** Boundary Value Analysis
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Product exists in the shopping cart.
+
+### Test Data
+
+| Field    | Value |
+| -------- | ----: |
+| Quantity |     0 |
+
+### Test Steps
+
+| Step | Action                       | Expected Result                    |
+| ---- | ---------------------------- | ---------------------------------- |
+| 1    | Open the shopping cart       | Cart is displayed                  |
+| 2    | Attempt to set quantity to 0 | Quantity validation is triggered   |
+| 3    | Apply the change             | Invalid cart state is not accepted |
+| 4    | Verify cart state            | Cart remains in a valid state      |
+
+### Expected Result
+
+A quantity that violates the minimum allowed quantity must not produce an invalid cart state.
+
+> Final expected behavior requires confirmation of the business rule for quantity zero.
+
+---
+
+## TC-014 — Update Product Quantity to a Negative Value
+
+**Requirement:** FR-004
+**Test Scenario:** TS-024
+**Priority:** High
+**Test Type:** Functional / Negative
+**Test Design Technique:** Equivalence Partitioning
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Test Data
+
+| Field    | Value |
+| -------- | ----: |
+| Quantity |    -1 |
+
+### Expected Result
+
+The system must not accept a negative product quantity.
+
+---
+
+## TC-015 — Minimum Valid Product Quantity
+
+**Requirement:** FR-004
+**Acceptance Criteria:** AC-010
+**Test Scenario:** TS-010
+**Priority:** High
+**Test Type:** Boundary / Positive
+**Test Design Technique:** Boundary Value Analysis
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Test Data
+
+| Field    | Value |
+| -------- | ----: |
+| Quantity |     1 |
+
+### Expected Result
+
+The minimum valid product quantity is accepted and the cart remains valid.
+
+---
+
+## TC-016 — Remove Product from Shopping Cart
+
+**Requirement:** FR-004
+**Acceptance Criteria:** AC-011
+**Test Scenario:** TS-011
+**Priority:** High
+**Test Type:** Functional / Positive
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* At least one product exists in the shopping cart.
+
+### Test Steps
+
+| Step | Action                   | Expected Result                      |
+| ---- | ------------------------ | ------------------------------------ |
+| 1    | Open the shopping cart   | Cart is displayed                    |
+| 2    | Locate the product       | Product is present                   |
+| 3    | Select the remove action | Remove operation is processed        |
+| 4    | Verify the shopping cart | Removed product is no longer present |
+
+### Expected Result
+
+The selected product is successfully removed from the shopping cart.
+
+---
+
+## TC-017 — Calculate Total for One Product
+
+**Requirement:** FR-004
+**Acceptance Criteria:** AC-012
+**Test Scenario:** TS-012
+**Priority:** Critical
+**Test Type:** Functional / Business Rule
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Test Data
+
+| Unit Price | Quantity | Expected Total |
+| ---------: | -------: | -------------: |
+|     100.00 |        2 |         200.00 |
+
+### Expected Result
+
+The cart total equals:
+
+```text
+Unit Price × Quantity
+100.00 × 2 = 200.00
+```
+
+---
+
+## TC-018 — Recalculate Total After Quantity Update
+
+**Requirement:** FR-004
+**Acceptance Criteria:** AC-010 / AC-012
+**Test Scenario:** TS-025
+**Priority:** Critical
+**Test Type:** Functional / Business Rule
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Test Data
+
+| Unit Price | Initial Qty | New Qty | Initial Total | Expected New Total |
+| ---------: | ----------: | ------: | ------------: | -----------------: |
+|     100.00 |           1 |       3 |        100.00 |             300.00 |
+
+### Expected Result
+
+After changing the quantity from 1 to 3, the cart total is recalculated from 100.00 to 300.00.
+
+---
+
+## TC-019 — Recalculate Total After Product Removal
+
+**Requirement:** FR-004
+**Acceptance Criteria:** AC-011 / AC-012
+**Test Scenario:** TS-025
+**Priority:** Critical
+**Test Type:** Functional / Business Rule
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Test Data
+
+| Product   |  Price |
+| --------- | -----: |
+| Product A | 100.00 |
+| Product B |  50.00 |
+
+**Initial Total:** 150.00
+
+### Expected Result
+
+After removing Product B, the cart total is recalculated to:
+
+```text
+100.00
+```
+
+---
+
+# 12. Shopping Cart Boundary Analysis
+
+| Value | Partition          | Expected Classification              |
+| ----: | ------------------ | ------------------------------------ |
+|    -1 | Invalid            | Reject                               |
+|     0 | Boundary / Invalid | Requires confirmed business behavior |
+|     1 | Boundary / Valid   | Accept                               |
+|     2 | Valid              | Accept                               |
+
+---
+
+# 13. Shopping Cart Requirement Gaps
+
+The following business rules require clarification:
+
+* Maximum quantity allowed per product.
+* Exact behavior when quantity is changed to zero.
+* Whether zero removes the product automatically or produces validation.
+* Behavior when requested quantity exceeds available inventory.
+* Decimal quantities versus integer-only quantities.
+* Price rounding rules.
+* Currency precision.
+* Tax calculation rules.
+* Discount calculation rules.
+* Shipping cost impact on the final total.
+* Behavior when product price changes while the product is already in the cart.
+
+These gaps should be clarified before complete cart coverage and automation are finalized.
+
+---
+
+# 14. Shopping Cart Coverage Summary
+
+| Test Case | Main Validation        | Technique                | Priority |
+| --------- | ---------------------- | ------------------------ | -------- |
+| TC-011    | Add product            | Positive                 | Critical |
+| TC-012    | Valid quantity         | Equivalence Partitioning | High     |
+| TC-013    | Quantity = 0           | Boundary Value Analysis  | High     |
+| TC-014    | Negative quantity      | Equivalence Partitioning | High     |
+| TC-015    | Minimum quantity       | Boundary Value Analysis  | High     |
+| TC-016    | Remove product         | Positive                 | High     |
+| TC-017    | Total calculation      | Business Rule            | Critical |
+| TC-018    | Quantity recalculation | Business Rule            | Critical |
+| TC-019    | Removal recalculation  | Business Rule            | Critical |
