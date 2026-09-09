@@ -341,3 +341,199 @@ Authentication currently contains:
 * 6 automation candidates
 
 Additional security and session test cases will be incorporated when security and risk-based scenarios are expanded.
+
+# 7. Product Catalog Test Cases
+
+## TC-007 — Display Available Products
+
+**Requirement:** FR-002
+**Acceptance Criteria:** AC-005
+**Test Scenario:** TS-005
+**Priority:** High
+**Test Type:** Functional / Positive
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Application is available.
+* Product catalog service is available.
+* At least one available product exists.
+
+### Test Data
+
+| Field                | Value     |
+| -------------------- | --------- |
+| Product Availability | Available |
+| Product Count        | >= 1      |
+
+### Test Steps
+
+| Step | Action                           | Expected Result                             |
+| ---- | -------------------------------- | ------------------------------------------- |
+| 1    | Navigate to the product catalog  | Product catalog page is displayed           |
+| 2    | Wait for products to load        | Available products are retrieved            |
+| 3    | Verify product list              | At least one available product is displayed |
+| 4    | Verify basic product information | Expected product information is visible     |
+
+### Expected Result
+
+Available products are correctly displayed in the catalog with the expected basic information.
+
+### Postconditions
+
+* Product catalog remains accessible.
+
+---
+
+## TC-008 — Select Product from Catalog
+
+**Requirement:** FR-002
+**Acceptance Criteria:** AC-006
+**Test Scenario:** TS-006
+**Priority:** High
+**Test Type:** Functional / Positive
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Product catalog contains at least one available product.
+
+### Test Data
+
+| Field   | Value             |
+| ------- | ----------------- |
+| Product | available_product |
+
+### Test Steps
+
+| Step | Action                          | Expected Result                      |
+| ---- | ------------------------------- | ------------------------------------ |
+| 1    | Navigate to the product catalog | Catalog is displayed                 |
+| 2    | Identify an available product   | Product can be selected              |
+| 3    | Select the product              | Product details request is initiated |
+| 4    | Verify navigation               | Product details page is displayed    |
+
+### Expected Result
+
+The user can select an available product and access its product details.
+
+### Postconditions
+
+* Selected product details are displayed.
+
+---
+
+# 8. Product Details Test Cases
+
+## TC-009 — Display Product Information
+
+**Requirement:** FR-003
+**Acceptance Criteria:** AC-007
+**Test Scenario:** TS-007
+**Priority:** High
+**Test Type:** Functional / Positive
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* A valid product exists.
+* User has navigated to its product details page.
+
+### Test Data
+
+| Field   | Value             |
+| ------- | ----------------- |
+| Product | available_product |
+
+### Test Steps
+
+| Step | Action                                    | Expected Result                       |
+| ---- | ----------------------------------------- | ------------------------------------- |
+| 1    | Open the product details page             | Product page is displayed             |
+| 2    | Verify product name                       | Correct product name is displayed     |
+| 3    | Verify product price                      | Correct price is displayed            |
+| 4    | Verify product availability               | Availability information is displayed |
+| 5    | Verify other relevant product information | Expected product details are present  |
+
+### Expected Result
+
+The product details page displays correct and consistent product information.
+
+### Postconditions
+
+* Product details remain available for further actions.
+
+---
+
+## TC-010 — Add Available Product to Cart
+
+**Requirement:** FR-003
+**Acceptance Criteria:** AC-008
+**Test Scenario:** TS-008
+**Priority:** Critical
+**Test Type:** Functional / Positive
+**Automation Candidate:** Yes
+**Execution Status:** Not Executed
+**Automation Status:** Not Automated
+
+### Preconditions
+
+* Product exists.
+* Product is available.
+* Product details page is displayed.
+
+### Test Data
+
+| Field    | Value             |
+| -------- | ----------------- |
+| Product  | available_product |
+| Quantity | 1                 |
+
+### Test Steps
+
+| Step | Action                           | Expected Result                 |
+| ---- | -------------------------------- | ------------------------------- |
+| 1    | Open the product details page    | Product is displayed            |
+| 2    | Confirm the product is available | Product can be purchased        |
+| 3    | Click Add to Cart                | Add-to-cart action is processed |
+| 4    | Open the shopping cart           | Shopping cart is displayed      |
+| 5    | Verify the selected product      | Product is present in the cart  |
+| 6    | Verify initial quantity          | Quantity is 1                   |
+
+### Expected Result
+
+The selected available product is successfully added to the shopping cart.
+
+### Postconditions
+
+* Product exists in the shopping cart.
+
+---
+
+# 9. Catalog and Product Coverage Summary
+
+| Test Case | Requirement | Scenario | Acceptance Criteria | Priority | Automation |
+| --------- | ----------- | -------- | ------------------- | -------- | ---------- |
+| TC-007    | FR-002      | TS-005   | AC-005              | High     | Yes        |
+| TC-008    | FR-002      | TS-006   | AC-006              | High     | Yes        |
+| TC-009    | FR-003      | TS-007   | AC-007              | High     | Yes        |
+| TC-010    | FR-003      | TS-008   | AC-008              | Critical | Yes        |
+
+---
+
+# 10. Requirement Gaps Identified
+
+The following information is not currently defined in sufficient detail and should be clarified before finalizing complete test coverage:
+
+* Expected behavior when no products are available.
+* Required product fields in the catalog.
+* Required product fields in the product details page.
+* Behavior when a product becomes unavailable after the catalog is loaded.
+* Maximum or minimum allowed product quantity.
+* Expected handling of inconsistent price or inventory information between catalog and product details.
