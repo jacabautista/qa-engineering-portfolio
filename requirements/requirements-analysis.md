@@ -1,287 +1,465 @@
-# Requirements Analysis — QA E-Commerce Platform
+# Análisis de Requisitos — QA E-Commerce Platform
 
-## 1. Purpose
+## 1. Propósito
 
-The purpose of this document is to analyze the functional requirements of the QA E-Commerce Platform and establish a foundation for test design, traceability, automation and quality validation.
+Este documento define y analiza los requisitos funcionales principales del proyecto **QA E-Commerce Platform**.
 
-The analysis identifies business capabilities, functional requirements, business rules, dependencies, risks and test considerations.
+El objetivo es proporcionar una base clara para:
 
-## 2. Business Objective
+* Acceptance Criteria.
+* Test Scenarios.
+* Test Cases.
+* API Testing.
+* Database Testing.
+* Automation.
+* Requirements Traceability.
+* Risk-Based Testing.
 
-The e-commerce platform must allow customers to browse products, authenticate into the platform, manage a shopping cart, complete the checkout process and create orders successfully.
+QA utilizará estos requisitos como referencia para diseñar y ejecutar las validaciones del sistema.
 
-The QA objective is to validate that the critical customer journey works correctly across the application, APIs, database and supporting services.
+---
 
-## 3. Main Business Flow
+## 2. Flujo principal de negocio
 
-```text
-Customer
+El flujo crítico de la plataforma es:
+
+Usuario
    ↓
 Login
    ↓
-Product Catalog
+Catálogo
    ↓
-Product Details
+Producto
    ↓
-Shopping Cart
+Carrito
    ↓
 Checkout
    ↓
-Payment
+Pago
    ↓
-Order Creation
+Orden
    ↓
-Database
+Base de Datos
    ↓
-Email Notification
-```
+Email
 
-## 4. Functional Requirements
+Cualquier problema que afecte este flujo puede tener impacto directo en la experiencia del usuario o en la operación del negocio.
 
-### FR-001 — User Authentication
+---
 
-The system must allow registered customers to authenticate using valid credentials.
+# 3. Requisitos Funcionales
 
-**Expected behavior:**
+## FR-001 — User Authentication
 
-* Valid credentials allow the user to access the application.
-* Invalid credentials must be rejected.
-* Empty credentials must be validated.
-* The system must provide an appropriate authentication error.
-* Authenticated users must have access to protected functionality.
+### Descripción
 
-### FR-002 — Product Catalog
+El sistema debe permitir que un usuario válido pueda autenticarse utilizando credenciales válidas.
 
-The system must allow customers to browse available products.
+### Comportamiento esperado
 
-**Expected behavior:**
+El sistema debe:
 
-* Products must be displayed correctly.
-* Product information must be available.
-* Product availability must be represented correctly.
-* Customers must be able to select a product.
+* Permitir login con credenciales válidas.
+* Rechazar contraseñas inválidas.
+* Rechazar usuarios inexistentes.
+* Validar campos obligatorios.
+* Evitar acceso no autorizado.
 
-### FR-003 — Product Details
+### Riesgos principales
 
-The system must display detailed information about a selected product.
+* Acceso no autorizado.
+* Mensajes de error incorrectos.
+* Sesión creada con credenciales inválidas.
+* Información sensible expuesta.
 
-**Expected behavior:**
+### Prioridad
 
-* Product name is displayed.
-* Product description is displayed.
-* Product price is displayed.
-* Product availability is displayed.
-* Product can be added to the shopping cart when available.
+Critical.
 
-### FR-004 — Shopping Cart
+---
 
-The system must allow customers to manage selected products.
+## FR-002 — Product Catalog
 
-**Expected behavior:**
+### Descripción
 
-* Products can be added to the cart.
-* Products can be removed from the cart.
-* Product quantity can be updated.
-* Cart totals must be recalculated correctly.
-* The cart must reflect the selected products.
+El sistema debe permitir visualizar los productos disponibles en el catálogo.
 
-### FR-005 — Checkout
+### Comportamiento esperado
 
-The system must allow customers to provide the information required to complete an order.
+El usuario debe poder:
 
-**Expected behavior:**
+* Visualizar productos.
+* Identificar información básica.
+* Seleccionar un producto disponible.
 
-* Required checkout information must be validated.
-* Invalid information must be rejected.
-* Missing mandatory information must be identified.
-* The customer must be able to proceed when all required information is valid.
+### Riesgos principales
 
-### FR-006 — Payment
+* Productos no disponibles mostrados incorrectamente.
+* Información incompleta.
+* Producto incorrecto seleccionado.
 
-The system must validate the payment step before creating an order.
+### Prioridad
 
-**Expected behavior:**
+High.
 
-* Valid payment information can proceed.
-* Invalid payment information must be rejected.
-* Payment failures must not create a successful order.
-* Payment status must be available to the order process.
+---
 
-For this QA project, real financial transactions are excluded.
+## FR-003 — Product Details
 
-### FR-007 — Order Creation
+### Descripción
 
-The system must create an order after successful checkout and payment validation.
+El sistema debe mostrar la información detallada de un producto seleccionado.
 
-**Expected behavior:**
+### Comportamiento esperado
 
-* A unique order identifier must be generated.
-* The order must contain the selected products.
-* The order total must be correct.
-* The order must have an initial status.
-* The order must be persisted in the database.
+El usuario debe poder visualizar información relevante como:
 
-### FR-008 — Email Notification
+* Nombre.
+* Precio.
+* Disponibilidad.
+* Información descriptiva.
 
-The system must generate an order notification after successful order creation.
+Cuando el producto esté disponible, el usuario debe poder agregarlo al carrito.
 
-**Expected behavior:**
+### Riesgos principales
 
-* The notification must correspond to the created order.
-* The customer information must be correct.
-* The order information must be correct.
-* The notification process must not modify the order incorrectly.
+* Precio incorrecto.
+* Información inconsistente.
+* Stock incorrecto.
+* Producto equivocado agregado al carrito.
 
-## 5. Business Rules
+### Prioridad
 
-| ID     | Business Rule                                                |
-| ------ | ------------------------------------------------------------ |
-| BR-001 | Only registered users can authenticate.                      |
-| BR-002 | Invalid credentials must not grant access.                   |
-| BR-003 | Only available products can be purchased.                    |
-| BR-004 | Cart totals must reflect product quantity and price.         |
-| BR-005 | Mandatory checkout information must be validated.            |
-| BR-006 | A failed payment must not result in a successful order.      |
-| BR-007 | Every successful order must have a unique identifier.        |
-| BR-008 | The order total must match the checkout total.               |
-| BR-009 | The order must be persisted after successful creation.       |
-| BR-010 | The order notification must correspond to the created order. |
+High.
 
-## 6. Non-Functional Considerations
+---
 
-The following non-functional areas will be considered during the project:
+## FR-004 — Shopping Cart
 
-### Performance
+### Descripción
 
-* Response time for critical operations.
-* API response time.
-* Checkout performance.
+El sistema debe permitir administrar los productos seleccionados antes del Checkout.
 
-### Security
+### Comportamiento esperado
 
-* Authentication.
-* Authorization.
-* Session management.
-* Input validation.
-* Sensitive information exposure.
+El usuario debe poder:
 
-### Reliability
+* Agregar productos.
+* Actualizar cantidades válidas.
+* Eliminar productos.
+* Visualizar el total.
+* Obtener recálculo correcto cuando cambia el carrito.
 
+### Riesgos principales
+
+* Total incorrecto.
+* Cantidades inválidas aceptadas.
+* Producto incorrecto eliminado.
+* Duplicación no esperada.
+* Diferencias entre precio y total.
+
+### Prioridad
+
+Critical.
+
+---
+
+## FR-005 — Checkout
+
+### Descripción
+
+El sistema debe permitir que un usuario continúe con el proceso de compra utilizando información válida.
+
+### Comportamiento esperado
+
+El sistema debe:
+
+* Solicitar información requerida.
+* Validar información del cliente.
+* Validar información de envío.
+* Permitir continuar cuando la información sea válida.
+* Rechazar información inválida o incompleta.
+
+### Riesgos principales
+
+* Checkout permitido sin datos obligatorios.
+* Información inválida aceptada.
+* Datos del cliente incorrectos.
+* Proceso iniciado con carrito vacío.
+
+### Prioridad
+
+Critical.
+
+---
+
+## FR-006 — Payment
+
+### Descripción
+
+El sistema debe procesar el resultado de una operación de pago.
+
+### Comportamiento esperado
+
+El sistema debe:
+
+* Procesar un pago aprobado.
+* Manejar un pago rechazado.
+* Evitar crear una orden exitosa cuando el pago falla.
+* Mantener consistencia entre Payment y Order.
+
+### Riesgos principales
+
+* Orden creada sin pago aprobado.
+* Pago duplicado.
+* Resultado financiero inconsistente.
+* Error de integración.
+* Timeout.
+* Reintentos incorrectos.
+
+### Prioridad
+
+Critical.
+
+---
+
+## FR-007 — Order Creation
+
+### Descripción
+
+El sistema debe crear una orden válida después de completar correctamente el proceso de compra.
+
+### Comportamiento esperado
+
+Una orden exitosa debe:
+
+* Ser creada después de un pago exitoso.
+* Contener información correcta.
+* Ser persistida.
+* Mantener integridad de datos.
+
+### Riesgos principales
+
+* Orden no creada después del pago.
+* Orden duplicada.
+* Información incorrecta.
+* Persistencia incompleta.
+* Inconsistencia entre Payment, Order y Database.
+
+### Prioridad
+
+Critical.
+
+---
+
+## FR-008 — Email Notification
+
+### Descripción
+
+El sistema debe enviar una notificación de confirmación cuando una orden sea creada exitosamente.
+
+### Comportamiento esperado
+
+La notificación debe:
+
+* Ser enviada únicamente para una transacción exitosa.
+* Corresponder a la orden correcta.
+* Contener información coherente con la orden.
+
+### Riesgos principales
+
+* Confirmación enviada después de una transacción fallida.
+* Información incorrecta.
+* Orden incorrecta asociada al email.
+* Notificación no enviada.
+
+### Prioridad
+
+High.
+
+---
+
+# 4. Matriz de requisitos
+
+| ID     | Requisito           | Prioridad | Riesgo                          |
+| ------ | ------------------- | --------- | ------------------------------- |
+| FR-001 | User Authentication | Critical  | Acceso no autorizado            |
+| FR-002 | Product Catalog     | High      | Información incorrecta          |
+| FR-003 | Product Details     | High      | Precio/stock incorrecto         |
+| FR-004 | Shopping Cart       | Critical  | Total incorrecto                |
+| FR-005 | Checkout            | Critical  | Compra con información inválida |
+| FR-006 | Payment             | Critical  | Impacto financiero              |
+| FR-007 | Order Creation      | Critical  | Integridad transaccional        |
+| FR-008 | Email Notification  | High      | Comunicación incorrecta         |
+
+---
+
+# 5. Requisitos no funcionales iniciales
+
+Los requisitos no funcionales específicos todavía deberán ser refinados.
+
+Se consideran inicialmente las siguientes categorías:
+
+* Performance.
+* Security.
+* Reliability.
+* Availability.
+* Usability.
+* Compatibility.
+* Maintainability.
+* Observability.
+
+QA no debe inventar valores específicos como tiempos máximos de respuesta o volúmenes de carga si estos no han sido definidos formalmente.
+
+---
+
+# 6. Requirement Gaps identificados
+
+Durante el análisis se identifican áreas que requieren definición adicional.
+
+## RG-001 — Maximum Cart Quantity
+
+No se ha definido la cantidad máxima permitida por producto.
+
+Impacto:
+
+* Boundary Value Analysis incompleto.
+* Validaciones de API incompletas.
+* Riesgo de comportamiento no especificado.
+
+---
+
+## RG-002 — Quantity Zero
+
+No se ha definido claramente qué debe ocurrir cuando una cantidad cambia a `0`.
+
+Posibles comportamientos podrían ser:
+
+* Rechazar el valor.
+* Eliminar el producto.
+* Mostrar error.
+
+QA no seleccionará uno sin definición del negocio.
+
+---
+
+## RG-003 — Price Precision
+
+No se ha definido formalmente:
+
+* Cantidad de decimales.
+* Regla de redondeo.
+* Moneda.
+* Tratamiento de impuestos.
+* Descuentos.
+
+---
+
+## RG-004 — Payment Timeout
+
+No está definido el comportamiento esperado ante un timeout de Payment.
+
+Se requiere definir:
+
+* Estado resultante.
+* Retry policy.
+* Mensaje al usuario.
+* Tratamiento de Order.
+* Reconciliación posterior.
+
+---
+
+## RG-005 — Duplicate Payment Submission
+
+Debe definirse el comportamiento ante envíos duplicados.
+
+Se debe aclarar:
+
+* Idempotency.
+* Duplicate Order prevention.
+* Duplicate Payment prevention.
+
+---
+
+## RG-006 — Order Persistence Failure
+
+Se requiere definir el comportamiento cuando:
+
+Payment = Successful
+Order Creation = Successful
+Database Persistence = Failed
+
+Este es un escenario crítico de consistencia transaccional.
+
+---
+
+## RG-007 — Notification Retry
+
+No está definido qué ocurre si la orden fue creada correctamente pero el email falla.
+
+Debe definirse:
+
+* Retry.
 * Error handling.
-* Recovery from failed operations.
-* Data consistency.
+* Logging.
+* Monitoring.
+* Impacto para el usuario.
 
-### Usability
+---
 
-* Clear validation messages.
-* Consistent navigation.
-* Understandable checkout flow.
+# 7. Principio de análisis
 
-## 7. Dependencies
+Cuando QA identifica información faltante:
 
-The main dependencies identified are:
+Información desconocida
+        ↓
+Requirement Gap
+        ↓
+BA / Product Owner
+        ↓
+Clarificación
+        ↓
+Requirement Update
+        ↓
+Test Design
 
-* Authentication service.
-* Product catalog service.
-* Shopping cart service.
-* Checkout service.
-* Payment service.
-* Order service.
-* Database.
-* Email notification service.
+QA no debe convertir una suposición en requisito.
 
-## 8. Requirement Risks
+---
 
-| ID     | Requirement     | Risk                              | Impact   |
-| ------ | --------------- | --------------------------------- | -------- |
-| RR-001 | Authentication  | Incorrect authentication behavior | High     |
-| RR-002 | Product Catalog | Incorrect product availability    | Medium   |
-| RR-003 | Cart            | Incorrect total calculation       | High     |
-| RR-004 | Checkout        | Missing validation                | High     |
-| RR-005 | Payment         | Incorrect payment status          | Critical |
-| RR-006 | Order           | Incorrect order persistence       | Critical |
-| RR-007 | Email           | Incorrect order notification      | Medium   |
+# 8. Trazabilidad
 
-## 9. Testability Assessment
+Cada requisito deberá relacionarse progresivamente con:
 
-| Requirement               | Testable | Automation Candidate | Priority |
-| ------------------------- | -------- | -------------------- | -------- |
-| FR-001 Authentication     | Yes      | Yes                  | Critical |
-| FR-002 Product Catalog    | Yes      | Yes                  | High     |
-| FR-003 Product Details    | Yes      | Yes                  | High     |
-| FR-004 Shopping Cart      | Yes      | Yes                  | Critical |
-| FR-005 Checkout           | Yes      | Yes                  | Critical |
-| FR-006 Payment            | Yes      | Yes                  | Critical |
-| FR-007 Order Creation     | Yes      | Yes                  | Critical |
-| FR-008 Email Notification | Yes      | Partial              | Medium   |
-
-## 10. Acceptance Criteria
-
-### Authentication
-
-* A registered user can authenticate using valid credentials.
-* Invalid credentials are rejected.
-* Protected functionality cannot be accessed without authentication.
-
-### Product Catalog
-
-* Available products are displayed.
-* Product information is correct.
-* Available products can be selected.
-
-### Shopping Cart
-
-* Products can be added.
-* Products can be removed.
-* Quantities can be updated.
-* Total values are recalculated correctly.
-
-### Checkout
-
-* Required information is validated.
-* Invalid information is rejected.
-* A valid checkout can proceed to payment.
-
-### Order
-
-* A successful transaction creates an order.
-* The order has a unique identifier.
-* The order contains the correct products and total.
-* The order is stored in the database.
-
-## 11. Traceability
-
-The requirements defined in this document will later be mapped to:
-
-```text
 Requirement
-     ↓
+    ↓
 Acceptance Criteria
-     ↓
+    ↓
 Test Scenario
-     ↓
+    ↓
 Test Case
-     ↓
-Automation Test
-     ↓
+    ↓
+Automation
+    ↓
+Execution
+    ↓
 Defect
-     ↓
-Execution Evidence
-     ↓
-Release Decision
-```
+    ↓
+Release
 
-This traceability will be maintained through the Requirements Traceability Matrix (RTM).
+La trazabilidad se mantiene en:
 
-## 12. Requirements Analysis Success Criteria
+test-design/traceability-matrix.md
 
-The requirements analysis will be considered complete when:
+---
 
-* Functional requirements are identified.
-* Business rules are documented.
-* Acceptance criteria are defined.
-* Dependencies are identified.
-* Requirement risks are documented.
-* Testability has been evaluated.
-* Automation candidates have been identified.
-* Requirements can be traced to future test cases.
+# 9. Criterio de finalización
+
+El análisis de requisitos se considera suficientemente establecido cuando:
+
+* Los requisitos principales están identificados.
+* Las funcionalidades críticas son conocidas.
+* Los riesgos principales están registrados.
+* Los Requirement Gaps están documentados.
+* Existen Acceptance Criteria asociados.
+* Existe trazabilidad hacia Test Scenarios y Test Cases.
