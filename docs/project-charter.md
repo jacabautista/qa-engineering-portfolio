@@ -1,179 +1,257 @@
 # Project Charter — QA E-Commerce Platform
 
-## 1. Información general
+## 1. Propósito
 
-**Nombre del proyecto:** QA E-Commerce Platform
-**Tipo de proyecto:** Quality Engineering / QA Automation
-**Responsable QA:** Janeth
-**Versión:** 1.0
-**Estado:** In Progress
+Este documento establece formalmente el proyecto **QA E-Commerce Platform**, definiendo sus objetivos, alcance general, participantes, entregables, riesgos iniciales y criterios de éxito.
+
+El proyecto tiene como propósito implementar y demostrar un proceso completo de **Quality Engineering**, desde el análisis de requisitos hasta la validación en producción.
 
 ---
 
-## 2. Descripción del proyecto
+## 2. Objetivo del proyecto
 
-QA E-Commerce Platform es un proyecto de práctica profesional orientado a implementar un proceso integral de Quality Assurance y Quality Engineering para una plataforma de comercio electrónico.
-
-El proyecto cubrirá el ciclo completo de calidad, desde el análisis de requisitos hasta la validación en producción.
-
-Flujo principal:
-
-**Login → Catálogo → Producto → Carrito → Checkout → Pago → Orden**
-
----
-
-## 3. Objetivo de negocio
-
-Garantizar que la plataforma de comercio electrónico permita a los usuarios realizar compras de forma confiable, segura y consistente, reduciendo riesgos de negocio asociados a errores funcionales y fallas durante el proceso de compra.
-
----
-
-## 4. Objetivo de QA
-
-Diseñar e implementar una estrategia integral de calidad que permita:
-
-* Detectar defectos tempranamente.
-* Validar los requisitos funcionales y no funcionales.
-* Automatizar escenarios críticos.
-* Validar UI, API y base de datos.
-* Integrar pruebas en CI/CD.
-* Generar evidencia y métricas de calidad.
-* Validar el sistema antes y después de cada release.
-* Reducir defectos escapados hacia producción.
-
----
-
-## 5. Alcance
-
-### Incluido
+Diseñar e implementar una estrategia integral de aseguramiento de calidad para una plataforma de comercio electrónico, incluyendo:
 
 * Análisis de requisitos.
-* Diseño de escenarios y casos de prueba.
-* Gestión de riesgos.
+* Diseño de pruebas.
 * Pruebas funcionales.
-* Pruebas de regresión.
-* Pruebas exploratorias.
-* Automatización Web.
-* Pruebas API.
-* Validaciones de base de datos.
-* Pruebas móviles.
-* Pruebas de performance.
-* Pruebas básicas de seguridad.
-* Integración con CI/CD.
-* Validación en ambientes de staging.
-* Smoke testing en producción.
-* Generación de reportes y métricas.
-* Gestión de defectos.
-* Documentación de estándares y procesos QA.
+* API Testing.
+* Database Testing.
+* Web Automation.
+* Mobile Testing cuando corresponda.
+* Performance Testing.
+* Validaciones básicas de seguridad.
+* CI/CD.
+* Regression Testing.
+* Release Validation.
+* Production Smoke Testing.
+* Métricas y reportes de calidad.
 
 ---
 
-## 6. Fuera de alcance
+## 3. Flujo de negocio principal
 
-Para esta primera versión quedan fuera:
+El flujo crítico del sistema es:
 
-* Desarrollo completo del producto e-commerce.
-* Administración real de sistemas de producción.
-* Procesamiento real de tarjetas bancarias.
-* Datos financieros reales.
-* Operaciones comerciales reales.
+Usuario
+   ↓
+Login
+   ↓
+Catálogo
+   ↓
+Producto
+   ↓
+Carrito
+   ↓
+Checkout
+   ↓
+Pago
+   ↓
+Orden
+   ↓
+Base de Datos
+   ↓
+Email
 
-El proyecto utilizará aplicaciones, APIs y datos de prueba.
+Este flujo será considerado de alta prioridad debido a su impacto directo sobre el negocio.
 
 ---
 
-## 7. Principales entregables
+## 4. Alcance general
 
-* Test Strategy.
-* Test Plan.
+El proyecto cubrirá principalmente:
+
+### Autenticación
+
+* Login válido.
+* Login inválido.
+* Validaciones de credenciales.
+* Control de acceso.
+
+### Catálogo
+
+* Visualización de productos.
+* Selección de productos.
+* Disponibilidad.
+
+### Producto
+
+* Información del producto.
+* Precio.
+* Stock.
+* Adición al carrito.
+
+### Carrito
+
+* Agregar productos.
+* Modificar cantidades.
+* Eliminar productos.
+* Recalcular totales.
+
+### Checkout
+
+* Información del cliente.
+* Información de envío.
+* Validaciones.
+
+### Pago
+
+* Pago exitoso.
+* Pago rechazado.
+* Manejo de errores.
+* Consistencia entre pago y orden.
+
+### Orden
+
+* Creación de orden.
+* Información de la orden.
+* Persistencia.
+* Integridad de datos.
+
+### Notificaciones
+
+* Confirmación de orden.
+* Consistencia entre orden y notificación.
+
+---
+
+## 5. Objetivos de calidad
+
+El proyecto busca:
+
+* Detectar defectos lo antes posible.
+* Reducir el riesgo de defectos en producción.
+* Mantener trazabilidad entre requisitos y pruebas.
+* Automatizar escenarios repetitivos y críticos.
+* Integrar pruebas dentro del pipeline de CI/CD.
+* Generar evidencia objetiva para decisiones de release.
+* Validar la consistencia entre UI, API y Database.
+* Implementar prácticas de mejora continua.
+
+---
+
+## 6. Entregables principales
+
+Los entregables podrán incluir:
+
+* Project Charter.
+* Scope.
+* WBS.
+* Project Plan.
+* Stakeholder Register.
+* RACI Matrix.
 * Risk Register.
+* Requirements Analysis.
+* Acceptance Criteria.
 * Test Scenarios.
 * Test Cases.
+* Test Data.
 * Requirements Traceability Matrix.
-* Automation Framework.
-* API Test Suite.
-* Database Validation.
-* Performance Tests.
+* Test Strategy.
+* Test Plan.
+* API Test Cases.
+* Automated Tests.
 * CI/CD Pipeline.
-* Defect Reports.
 * Test Execution Reports.
+* Defect Reports.
+* Regression Report.
 * Release Checklist.
 * Go/No-Go Recommendation.
 * Production Smoke Report.
-* QA Standards.
-* Project Documentation.
 
 ---
 
-## 8. Criterios de éxito
+## 7. Stakeholders principales
+
+Participan los siguientes roles:
+
+* Product Owner.
+* Project Manager.
+* Business Analyst.
+* QA Lead.
+* QA Engineer.
+* Development Lead.
+* Developers.
+* DevOps Engineer.
+* Customer Support.
+* End Users.
+
+Las responsabilidades detalladas se encuentran documentadas en:
+
+management/stakeholder-register.md
+management/raci.md
+
+---
+
+## 8. Riesgos iniciales
+
+Entre los riesgos principales se consideran:
+
+* Requisitos incompletos.
+* Reglas de negocio ambiguas.
+* Inestabilidad de ambientes.
+* Datos de prueba insuficientes.
+* Dependencias externas.
+* Fallos de integración de pagos.
+* Baja cobertura de automatización.
+* Cambios tardíos de alcance.
+* Defectos detectados tardíamente.
+
+El detalle se mantiene en:
+
+docs/risk-register.md
+
+---
+
+## 9. Criterios de éxito
 
 El proyecto será considerado exitoso cuando:
 
-1. Los requisitos críticos tengan cobertura de pruebas.
-2. Los escenarios críticos estén automatizados.
-3. Las pruebas API puedan ejecutarse automáticamente.
-4. Las validaciones de base de datos estén implementadas.
-5. Las pruebas estén integradas en CI/CD.
-6. Los defectos sean registrados y trazables.
-7. Existan métricas de calidad.
-8. Los Quality Gates estén definidos.
-9. Se genere evidencia de las ejecuciones.
-10. El proceso completo pueda ser reproducido desde GitHub.
+* Los requisitos críticos tengan cobertura de pruebas.
+* Los principales riesgos de negocio hayan sido evaluados.
+* Exista trazabilidad entre requisitos y pruebas.
+* Los flujos críticos estén automatizados cuando sea viable.
+* Las pruebas puedan integrarse en CI/CD.
+* Los resultados sean medibles.
+* Los riesgos residuales sean conocidos.
+* QA pueda proporcionar evidencia para una decisión de release.
 
 ---
 
-## 9. Riesgos iniciales
+## 10. Enfoque de entrega
 
-Los principales riesgos identificados son:
+El proyecto seguirá el flujo:
 
-* Requisitos ambiguos.
-* Datos de prueba insuficientes.
-* Ambientes inestables.
-* Flaky tests.
-* Cambios frecuentes en la aplicación.
-* Fallas de integración entre servicios.
-* Cobertura insuficiente de escenarios críticos.
-
-Los riesgos serán gestionados mediante un Risk Register.
-
----
-
-## 10. Quality Gates
-
-El proyecto utilizará Quality Gates para determinar si una fase puede avanzar a la siguiente.
-
-**Gate 1 — QA Entry**
-
-Los requisitos y criterios de aceptación deben estar suficientemente definidos.
-
-**Gate 2 — Regression**
-
-Los escenarios críticos deben cumplir los criterios establecidos de calidad.
-
-**Gate 3 — Release**
-
-No deben existir defectos críticos o bloqueantes abiertos sin una decisión formal.
-
-**Gate 4 — Production**
-
-Después del despliegue se ejecutará un conjunto de pruebas Smoke para validar las funcionalidades críticas.
+Requirements
+     ↓
+Planning
+     ↓
+Test Design
+     ↓
+API Testing
+     ↓
+Database Testing
+     ↓
+Automation
+     ↓
+CI/CD
+     ↓
+Regression
+     ↓
+Release
+     ↓
+Production Validation
+     ↓
+Monitoring
+     ↓
+Continuous Improvement
 
 ---
 
-## 11. Filosofía de calidad
+## 11. Aprobación
 
-La calidad será gestionada como una responsabilidad transversal del equipo y no únicamente como una actividad realizada al final del desarrollo.
+El Project Charter establece la base inicial del proyecto.
 
-El enfoque será:
+Cualquier modificación significativa de alcance deberá seguir el proceso definido en:
 
-**Prevenir → Detectar → Automatizar → Medir → Mejorar**
-
----
-
-## 12. Evolución del proyecto
-
-El proyecto evolucionará progresivamente desde pruebas manuales y documentación hacia un modelo completo de Quality Engineering:
-
-**Requirements → QA → Automation → API → Database → CI/CD → Release → Production → Monitoring**
-
-Este proyecto servirá además como evidencia profesional de las competencias adquiridas en QA Automation, Quality Engineering, DevOps y gestión tecnológica.
+management/change-management.md

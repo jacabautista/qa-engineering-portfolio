@@ -1,37 +1,34 @@
-## FILE: docs/test-strategy.md
-
 # Test Strategy — QA E-Commerce Platform
 
-## 1. Purpose
+## 1. Propósito
 
-This document defines the overall quality assurance and testing strategy for the QA E-Commerce Platform.
+Este documento define la estrategia general de calidad y pruebas para QA E-Commerce Platform.
 
-The strategy establishes the testing approach, quality objectives, testing levels, automation principles, environments, test data, defect management, metrics, quality gates and release validation practices.
-
----
-
-## 2. Quality Objectives
-
-The project aims to:
-
-* Validate critical business workflows.
-* Detect defects as early as possible.
-* Reduce production risk.
-* Provide requirements traceability.
-* Automate repeatable regression scenarios.
-* Validate APIs independently from the UI.
-* Validate persistence and data integrity.
-* Integrate automated tests into CI/CD.
-* provide objective quality evidence for release decisions.
-* Validate critical production functionality after deployment.
+La estrategia establece cómo se abordará la calidad durante todo el Software Development Life Cycle (SDLC).
 
 ---
 
-## 3. Quality Engineering Approach
+## 2. Objetivos de calidad
 
-The project follows:
+La estrategia busca:
 
-```text
+* Prevenir defectos.
+* Detectar defectos tempranamente.
+* Reducir Production Risk.
+* Mantener Requirements Traceability.
+* Automatizar validaciones repetitivas.
+* Validar APIs independientemente de UI.
+* Validar Database Persistence.
+* Integrar pruebas dentro de CI/CD.
+* Generar métricas.
+* Proporcionar evidencia para Release Decisions.
+
+---
+
+## 3. Enfoque Quality Engineering
+
+Se utilizará:
+
 Shift Left
     ↓
 Requirements Analysis
@@ -40,70 +37,70 @@ Risk Analysis
     ↓
 Test Design
     ↓
-API / DB / UI Testing
+API / Database / UI Testing
     ↓
 Automation
     ↓
 CI/CD
     ↓
-Release Validation
+Regression
+    ↓
+Release
     ↓
 Production Smoke
     ↓
 Monitoring
-```
 
-Testing is considered part of the entire software delivery lifecycle rather than an activity performed only after development.
+QA no se considera únicamente una etapa posterior al desarrollo.
 
 ---
 
-## 4. Testing Levels
+## 4. Niveles de pruebas
 
 ### Unit Testing
 
-Primary responsibility: Development.
+Responsabilidad principal de Development.
 
-Focus:
+Validará:
 
-* Business logic
-* Utility functions
-* Data transformations
-* Component behavior
+* Business Logic.
+* Functions.
+* Components.
+* Data transformations.
 
 ### API / Service Testing
 
-Primary responsibility: QA Automation and Development.
+Validará:
 
-Focus:
-
-* Request validation
-* Response validation
-* HTTP status
-* Schema
-* Authentication
-* Authorization
-* Business rules
-* Integration behavior
+* Request.
+* Response.
+* HTTP Status.
+* Headers.
+* JSON.
+* Schema.
+* Authentication.
+* Authorization.
+* Business Rules.
+* Error Handling.
 
 ### Integration Testing
 
-Focus:
+Validará integraciones como:
 
-* UI → API
-* API → Database
-* Payment → Order
-* Order → Database
-* Order → Notification
+UI → API
+API → Database
+Payment → Order
+Order → Database
+Order → Email
 
 ### System Testing
 
-Validate the complete application behavior against functional requirements.
+Validará el comportamiento completo del sistema contra los requisitos.
 
 ### End-to-End Testing
 
-Critical flow:
+Validará:
 
-```text
 Login
 → Catalog
 → Product
@@ -113,377 +110,393 @@ Login
 → Order
 → Database
 → Email
-```
 
 ### Production Validation
 
-Limited controlled smoke testing after deployment.
+Se ejecutarán únicamente pruebas controladas y seguras.
 
 ---
 
-## 5. Testing Types
+## 5. Tipos de pruebas
 
-The project may include:
+Según el riesgo se utilizarán:
 
-* Functional Testing
-* Negative Testing
-* Boundary Value Analysis
-* Equivalence Partitioning
-* Decision Table Testing
-* Integration Testing
-* API Testing
-* Database Testing
-* Regression Testing
-* Smoke Testing
-* Exploratory Testing
-* Performance Testing
-* Basic Security Validation
-* Reliability Testing
-* End-to-End Testing
+* Functional Testing.
+* Negative Testing.
+* Equivalence Partitioning.
+* Boundary Value Analysis.
+* Decision Table Testing.
+* API Testing.
+* Database Testing.
+* Integration Testing.
+* Regression Testing.
+* Smoke Testing.
+* Exploratory Testing.
+* End-to-End Testing.
+* Performance Testing.
+* Basic Security Validation.
 
 ---
 
 ## 6. Risk-Based Testing
 
-Testing priority is determined using business impact and probability of failure.
+La prioridad será determinada principalmente por:
 
-Critical areas include:
+Business Impact × Probability of Failure
 
-* Authentication
-* Shopping cart totals
-* Checkout
-* Payment
-* Order creation
-* Database persistence
-* Duplicate transactions
-* Notification correctness
+Áreas críticas:
 
-Critical business flows receive deeper coverage and higher automation priority.
+* Authentication.
+* Cart totals.
+* Checkout.
+* Payment.
+* Order Creation.
+* Database Persistence.
+* Duplicate Transactions.
+* Notifications.
 
----
-
-## 7. Test Pyramid Strategy
-
-Preferred distribution:
-
-```text
-        E2E
-       /   \
-      UI Tests
-     /       \
-    API Tests
-   /           \
- Unit / Component
-```
-
-The project should avoid excessive dependence on slow UI tests.
-
-API and service-level validation should provide a large portion of automated regression coverage.
+A mayor riesgo, mayor profundidad de pruebas.
 
 ---
 
-## 8. Manual vs Automated Testing
+## 7. Test Pyramid
+
+El enfoque recomendado será:
+
+          E2E
+         /   \
+       UI Tests
+      /       \
+     API Tests
+    /           \
+Unit / Component Tests
+
+Se evitará depender excesivamente de UI Automation.
+
+Siempre que sea posible, las reglas de negocio deberán validarse en niveles inferiores.
+
+---
+
+## 8. Manual vs Automation
 
 ### Manual Testing
 
-Preferred for:
+Adecuado para:
 
-* Exploratory testing
-* New functionality
-* Unstable functionality
-* Usability
-* Visual verification
-* One-time scenarios
-* Requirement clarification
+* Exploratory Testing.
+* Funcionalidades nuevas.
+* Usability.
+* Visual Validation.
+* Requirement Discovery.
+* Escenarios poco repetitivos.
 
 ### Automated Testing
 
-Preferred for:
+Adecuado para:
 
-* Regression
-* Critical flows
-* Repetitive scenarios
-* API validation
-* Data-driven testing
-* Smoke testing
-* CI/CD quality gates
-* Stable functionality
+* Regression.
+* Critical Flows.
+* Repetitive Scenarios.
+* API Validation.
+* Smoke Testing.
+* Data-Driven Testing.
+* CI/CD Quality Gates.
 
 ---
 
 ## 9. API Testing Strategy
 
-API testing will validate:
+Se validarán:
 
-* HTTP methods
-* Status codes
-* Headers
-* JSON payloads
-* Authentication
-* Authorization
-* Schemas
-* Error handling
-* Business rules
-* Idempotency
-* Data consistency
+* HTTP Methods.
+* Status Codes.
+* Headers.
+* JSON payloads.
+* Authentication.
+* Authorization.
+* Schema.
+* Business Rules.
+* Error Handling.
+* Idempotency.
+* Data Consistency.
 
-Tools may include:
+Herramientas previstas:
 
-* curl
-* Postman
-* Newman
-* Automated API libraries
+curl
+Postman
+Newman
+Automation Framework
 
 ---
 
 ## 10. Database Testing Strategy
 
-Database validation will include:
+Se validará:
 
-* Data persistence
-* CRUD validation
-* Referential integrity
-* Order consistency
-* Transaction consistency
-* UI/API/DB comparison
-* Duplicate record validation
+* CRUD.
+* Data Persistence.
+* Referential Integrity.
+* Relationships.
+* Order consistency.
+* Duplicate records.
+* UI/API/DB consistency.
 
 ---
 
 ## 11. Web Automation Strategy
 
-Web automation will focus on stable and high-value regression scenarios.
+La automatización Web priorizará escenarios:
 
-The automation architecture should include:
+* Estables.
+* Repetitivos.
+* Críticos.
+* De alto valor para Regression.
 
-* Page Object Model
-* Fixtures
-* Reusable components
-* Test data separation
-* Environment configuration
-* Logging
-* Screenshots
-* Reports
-* Parallel execution where appropriate
+La arquitectura podrá utilizar:
+
+* Page Object Model.
+* Fixtures.
+* Reusable Components.
+* Test Data separation.
+* Environment configuration.
+* Logging.
+* Screenshots.
+* Reports.
+* Parallel Execution.
 
 ---
 
 ## 12. Mobile Testing Strategy
 
-When mobile coverage is introduced, testing may include:
+Cuando se incorpore Mobile Testing se podrá utilizar:
 
-* Android emulator/device validation
-* Appium automation
-* Gestures
-* Permissions
-* Dynamic elements
-* Mobile-specific synchronization
-* API integration
+* Android Studio.
+* Android SDK.
+* Emulator.
+* ADB.
+* Appium.
+* Appium Inspector.
+* Java.
+* Maven.
+
+Se validarán:
+
+* Elementos.
+* Gestures.
+* Permissions.
+* Waits.
+* Mobile flows.
+* API integration.
 
 ---
 
 ## 13. Performance Testing Strategy
 
-Performance testing may include:
+Se podrán realizar:
 
-* Load
-* Stress
-* Spike
-* Soak
-* Volume
+* Load Testing.
+* Stress Testing.
+* Spike Testing.
+* Soak Testing.
+* Volume Testing.
 
-Metrics may include:
+Métricas:
 
-* Response time
-* Throughput
-* Error rate
-* CPU
-* Memory
-* Bottlenecks
+* Response Time.
+* Throughput.
+* Error Rate.
+* CPU.
+* Memory.
+* Resource utilization.
 
 ---
 
 ## 14. Security Testing Strategy
 
-QA security validation may include:
+QA realizará validaciones básicas relacionadas con:
 
-* Authentication behavior
-* Authorization
-* Session handling
-* Input validation
-* Sensitive information exposure
-* Common OWASP risks
+* Authentication.
+* Authorization.
+* Sessions.
+* Input Validation.
+* Sensitive Data Exposure.
+* Common OWASP risks.
 
-Full penetration testing is outside the current project scope.
+Full Penetration Testing queda fuera del alcance actual.
 
 ---
 
 ## 15. Test Data Strategy
 
-Test data should be:
+Test Data deberá ser:
 
-* Synthetic
-* Predictable
-* Repeatable
-* Isolated
-* Non-sensitive
+* Synthetic.
+* Predictable.
+* Repeatable.
+* Isolated.
+* Non-sensitive.
+* Automation-ready.
 
-Sensitive production information must not be committed to the repository.
+No deberán almacenarse credenciales reales ni información sensible en Git.
 
 ---
 
 ## 16. Environment Strategy
 
-Target environments:
+Modelo:
 
-```text
 Local
-→ Development
-→ QA
-→ Staging
-→ Production
-```
+ ↓
+Development
+ ↓
+QA
+ ↓
+Staging
+ ↓
+Production
 
-Each environment must have documented configuration and entry conditions.
+La configuración debe separarse del código.
+
+Ejemplos:
+
+BASE_URL
+API_URL
+DB_HOST
+DB_NAME
+TEST_USERNAME
+TEST_PASSWORD
+PAYMENT_MODE
+
+Los secrets no deberán almacenarse directamente en Git.
 
 ---
 
 ## 17. Defect Management
 
-Defects should contain:
+Un defecto deberá incluir como mínimo:
 
-* Identifier
-* Summary
-* Environment
-* Severity
-* Priority
-* Preconditions
-* Steps
-* Actual result
-* Expected result
-* Evidence
-* Status
-* Related requirement/test case
-
----
-
-## 18. Severity Model
-
-| Severity | Definition                                               |
-| -------- | -------------------------------------------------------- |
-| Critical | Blocks critical business operation or causes severe risk |
-| High     | Major functionality fails                                |
-| Medium   | Functionality is affected but workaround exists          |
-| Low      | Minor impact                                             |
+* Identifier.
+* Summary.
+* Environment.
+* Severity.
+* Priority.
+* Preconditions.
+* Steps.
+* Actual Result.
+* Expected Result.
+* Evidence.
+* Status.
+* Related Test Case.
 
 ---
 
-## 19. Entry Criteria
+## 18. Entry Criteria
 
-Testing may begin when:
+Las pruebas podrán comenzar cuando:
 
-* Requirements are available.
-* Acceptance criteria are defined.
-* Build is deployed.
-* Test environment is available.
-* Required test data exists.
-* Critical dependencies are available.
-
----
-
-## 20. Exit Criteria
-
-Testing may complete when:
-
-* Critical tests have been executed.
-* Critical defects are resolved or formally accepted.
-* Regression is completed.
-* Required quality gates are satisfied.
-* Residual risks are documented.
-* QA recommendation is available.
+* Requirements estén disponibles.
+* Acceptance Criteria estén definidos.
+* Build esté desplegado.
+* Environment esté disponible.
+* Test Data esté preparada.
+* Dependencias críticas estén disponibles.
 
 ---
 
-## 21. Quality Metrics
+## 19. Exit Criteria
 
-Metrics may include:
+La fase podrá finalizar cuando:
 
-* Requirements coverage
-* Acceptance criteria coverage
-* Test execution coverage
-* Pass rate
-* Failure rate
-* Blocked rate
-* Automation coverage
-* Regression coverage
-* Defect density
-* Defect leakage
-* Reopen rate
-* Escaped defects
-* Flaky test rate
-* Automation execution time
+* Critical Tests hayan sido ejecutados.
+* Critical Defects estén resueltos o formalmente aceptados.
+* Regression esté completa.
+* Evidencia esté disponible.
+* Riesgos residuales estén documentados.
+* Quality Gates hayan sido evaluados.
 
 ---
 
-## 22. Quality Gates
+## 20. Métricas
 
-### QA Entry Gate
+Se utilizarán progresivamente:
 
-* Build deployed
-* Environment available
-* Test data available
-* Requirements approved
-
-### Regression Gate
-
-* Critical tests passed
-* No unresolved blocking defects
-* API regression passed
-* Automation suite executed
-
-### Release Gate
-
-* Regression completed
-* Known risks documented
-* Release documentation available
-* QA recommendation issued
-
-### Production Gate
-
-* Deployment successful
-* Smoke tests passed
-* No critical production issue detected
+* Requirements Coverage.
+* Acceptance Criteria Coverage.
+* Test Execution Coverage.
+* Pass Rate.
+* Failure Rate.
+* Blocked Rate.
+* Automation Coverage.
+* Regression Coverage.
+* Defect Density.
+* Defect Leakage.
+* Reopen Rate.
+* Escaped Defects.
+* Flaky Test Rate.
+* Automation Execution Time.
 
 ---
 
-## 23. Release Recommendation
+## 21. Quality Gates
 
-QA should provide one of:
+El proyecto utilizará:
 
-```text
+QA Entry Gate
+      ↓
+Regression Gate
+      ↓
+Release Gate
+      ↓
+Production Gate
+
+Los criterios específicos se encuentran en:
+
+docs/quality-gates.md
+
+---
+
+## 22. Release Recommendation
+
+QA podrá recomendar:
+
 GO
 GO WITH ACCEPTED RISK
 NO-GO
-```
 
-The recommendation must be based on objective evidence.
-
----
-
-## 24. Continuous Improvement
-
-After each major release, QA should review:
-
-* Escaped defects
-* Automation failures
-* Test gaps
-* Process bottlenecks
-* Flaky tests
-* Metrics
-* Lessons learned
+La recomendación deberá estar respaldada por evidencia.
 
 ---
 
-## 25. Completion Criteria
+## 23. Continuous Improvement
 
-The Test Strategy is considered established when testing approach, responsibilities, risk model, automation direction, quality gates and metrics are defined and understood.
+Después de releases importantes se analizarán:
+
+* Escaped Defects.
+* Automation failures.
+* Test gaps.
+* Flaky Tests.
+* Process bottlenecks.
+* Metrics.
+* Lessons Learned.
+
+---
+
+## 24. Principio estratégico
+
+El objetivo no es únicamente:
+
+Encontrar bugs
+
+El objetivo de Quality Engineering es:
+
+Prevenir defectos
+      +
+Detectar riesgos
+      +
+Automatizar controles
+      +
+Generar evidencia
+      +
+Facilitar decisiones
+      +
+Mejorar continuamente

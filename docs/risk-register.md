@@ -1,89 +1,173 @@
 # Risk Register — QA E-Commerce Platform
 
-## 1. Objetivo
+## 1. Propósito
 
-El Risk Register permite identificar, analizar, priorizar y gestionar los riesgos que puedan afectar la calidad, el alcance, el tiempo, el costo o la continuidad del proyecto.
-
-## 2. Escala de evaluación
-
-### Probabilidad
-
-| Valor | Descripción |
-| ----- | ----------- |
-| 1     | Muy baja    |
-| 2     | Baja        |
-| 3     | Media       |
-| 4     | Alta        |
-| 5     | Muy alta    |
-
-### Impacto
-
-| Valor | Descripción |
-| ----- | ----------- |
-| 1     | Muy bajo    |
-| 2     | Bajo        |
-| 3     | Medio       |
-| 4     | Alto        |
-| 5     | Crítico     |
-
-### Nivel de riesgo
-
-**Nivel de riesgo = Probabilidad × Impacto**
-
-| Puntaje | Nivel   |
-| ------: | ------- |
-|     1–4 | Bajo    |
-|     5–9 | Medio   |
-|   10–16 | Alto    |
-|   17–25 | Crítico |
+Este documento identifica, analiza y controla los principales riesgos que pueden afectar la calidad, alcance, cronograma y entrega del proyecto QA E-Commerce Platform.
 
 ---
 
-## 3. Registro de riesgos
+## 2. Escala de probabilidad
 
-| ID    | Riesgo                                | Causa                                                | Prob. | Impacto | Nivel   | Mitigación                                                 | Contingencia                                     | Responsable      | Estado  |
-| ----- | ------------------------------------- | ---------------------------------------------------- | ----: | ------: | ------- | ---------------------------------------------------------- | ------------------------------------------------ | ---------------- | ------- |
-| R-001 | Ambiente de pruebas inestable         | Configuración incorrecta o fallas de infraestructura |     4 |       5 | Crítico | Definir ambiente QA estable y ejecutar Smoke Tests         | Escalar a DevOps y utilizar ambiente alternativo | QA Lead / DevOps | Abierto |
-| R-002 | Cambios frecuentes en la interfaz     | Evolución continua de requisitos                     |     4 |       3 | Alto    | Utilizar Page Object Model y locators robustos             | Actualizar componentes afectados                 | QA Automation    | Abierto |
-| R-003 | Datos de prueba insuficientes         | Falta de estrategia de Test Data                     |     3 |       4 | Alto    | Crear datos controlados y reutilizables                    | Generar datos adicionales antes de la ejecución  | QA / Dev         | Abierto |
-| R-004 | Flaky Tests                           | Sincronización incorrecta o dependencia del ambiente |     3 |       4 | Alto    | Implementar waits, fixtures y aislamiento                  | Analizar y corregir antes del release            | QA Automation    | Abierto |
-| R-005 | Defectos críticos llegan a producción | Cobertura insuficiente de regresión                  |     3 |       5 | Alto    | Automatizar escenarios críticos y establecer Quality Gates | Bloquear release y ejecutar análisis de impacto  | QA Lead          | Abierto |
-
----
-
-## 4. Estrategia de respuesta
-
-Los riesgos serán tratados mediante las siguientes estrategias:
-
-* **Mitigar:** reducir la probabilidad o impacto.
-* **Evitar:** eliminar la causa del riesgo cuando sea posible.
-* **Transferir:** trasladar la responsabilidad a un tercero cuando corresponda.
-* **Aceptar:** asumir el riesgo cuando su impacto sea controlable.
+| Valor | Nivel    |
+| ----: | -------- |
+|     1 | Muy baja |
+|     2 | Baja     |
+|     3 | Media    |
+|     4 | Alta     |
+|     5 | Muy alta |
 
 ---
 
-## 5. Seguimiento
+## 3. Escala de impacto
 
-El Risk Register será revisado durante las principales etapas del proyecto:
-
-* Inicio del proyecto.
-* Análisis de requisitos.
-* Diseño de pruebas.
-* Automatización.
-* Regresión.
-* Release.
-* Producción.
-
-Los riesgos críticos y altos deberán ser revisados antes de cada decisión de release.
+| Valor | Nivel    |
+| ----: | -------- |
+|     1 | Muy bajo |
+|     2 | Bajo     |
+|     3 | Medio    |
+|     4 | Alto     |
+|     5 | Crítico  |
 
 ---
 
-## 6. Criterio de escalamiento
+## 4. Cálculo
 
-Un riesgo deberá escalarse al QA Lead o Project Manager cuando:
+Risk Score = Probability × Impact
 
-* Su nivel sea **Crítico**.
-* Pueda comprometer una funcionalidad crítica.
-* Pueda afectar la fecha de release.
-* Pueda generar impacto significativo para el negocio.
-* No exista una mitigación bajo control del equipo QA.
+Clasificación:
+
+| Score | Nivel   |
+| ----: | ------- |
+|   1–5 | Bajo    |
+|  6–10 | Medio   |
+| 11–15 | Alto    |
+| 16–25 | Crítico |
+
+---
+
+## 5. Registro de riesgos
+
+| ID       | Riesgo                           | Prob. | Impacto | Score | Nivel   | Mitigación                                |
+| -------- | -------------------------------- | ----: | ------: | ----: | ------- | ----------------------------------------- |
+| RISK-001 | Requisitos incompletos           |     4 |       4 |    16 | Crítico | Requirements Review y Requirement Gaps    |
+| RISK-002 | Acceptance Criteria ambiguos     |     4 |       4 |    16 | Crítico | Revisión con BA/PO                        |
+| RISK-003 | Ambiente QA inestable            |     3 |       4 |    12 | Alto    | Environment Checklist y monitoreo         |
+| RISK-004 | Test Data compartida             |     4 |       3 |    12 | Alto    | Data isolation                            |
+| RISK-005 | Payment Sandbox no disponible    |     3 |       5 |    15 | Alto    | Mock/Sandbox alternativo                  |
+| RISK-006 | Baja cobertura de automatización |     3 |       4 |    12 | Alto    | Automation Roadmap                        |
+| RISK-007 | Flaky Tests                      |     3 |       3 |     9 | Medio   | Wait strategy y análisis de causa         |
+| RISK-008 | Defectos encontrados tarde       |     3 |       5 |    15 | Alto    | Shift Left y API Testing                  |
+| RISK-009 | Duplicación de pagos             |     2 |       5 |    10 | Medio   | Idempotency Testing                       |
+| RISK-010 | Orden no persistida              |     2 |       5 |    10 | Medio   | Database Validation                       |
+| RISK-011 | Datos inconsistentes UI/API/DB   |     3 |       5 |    15 | Alto    | Cross-layer validation                    |
+| RISK-012 | Cambios tardíos de alcance       |     4 |       4 |    16 | Crítico | Change Management                         |
+| RISK-013 | Secrets almacenados en Git       |     2 |       5 |    10 | Medio   | Environment Variables / Secret Management |
+| RISK-014 | Regression insuficiente          |     3 |       5 |    15 | Alto    | Risk-Based Regression                     |
+| RISK-015 | Defectos críticos en producción  |     2 |       5 |    10 | Medio   | Quality Gates + Production Smoke          |
+
+---
+
+## 6. Riesgos funcionales críticos
+
+Las áreas con mayor impacto de negocio son:
+
+Authentication
+      ↓
+Cart
+      ↓
+Checkout
+      ↓
+Payment
+      ↓
+Order
+      ↓
+Database
+      ↓
+Notification
+
+Payment y Order requieren especial atención debido al posible impacto financiero y de integridad de datos.
+
+---
+
+## 7. Estrategias de respuesta
+
+### Mitigar
+
+Reducir la probabilidad o impacto.
+
+### Evitar
+
+Modificar el enfoque para eliminar el riesgo.
+
+### Transferir
+
+Asignar parte del riesgo a un proveedor o servicio.
+
+### Aceptar
+
+Aceptar conscientemente el riesgo y documentar su impacto.
+
+---
+
+## 8. Riesgo residual
+
+Después de aplicar mitigaciones puede continuar existiendo riesgo.
+
+Este riesgo se denomina:
+
+Residual Risk
+
+Debe ser comunicado antes de una decisión de release.
+
+---
+
+## 9. Escalación
+
+Los riesgos Critical o de alto impacto deben comunicarse al:
+
+QA Lead
+   ↓
+Project Manager
+   ↓
+Product Owner
+   ↓
+Stakeholders correspondientes
+
+---
+
+## 10. Revisión
+
+El Risk Register debe revisarse:
+
+* Durante planificación.
+* Cuando cambien requisitos.
+* Cuando aparezcan defectos críticos.
+* Antes de Regression.
+* Antes del Release.
+* Después de incidentes de producción.
+
+---
+
+## 11. Relación con QA
+
+Los riesgos deben influir directamente en:
+
+* Prioridad de Test Cases.
+* Regression Scope.
+* Automation Priority.
+* Performance Testing.
+* Security Testing.
+* Quality Gates.
+* Release Recommendation.
+
+---
+
+## 12. Principio
+
+Mayor riesgo
+    ↓
+Mayor profundidad de pruebas
+    ↓
+Mayor prioridad de automatización
+
+Esto constituye la base del enfoque de **Risk-Based Testing**.

@@ -1,76 +1,109 @@
 # Test Plan — QA E-Commerce Platform
 
-## 1. Purpose
+## 1. Propósito
 
-This document defines the test execution plan for the QA E-Commerce Platform.
+Este documento define el plan de pruebas específico para QA E-Commerce Platform.
 
----
-
-## 2. Test Objectives
-
-The objectives are to:
-
-* Validate functional requirements.
-* Validate critical business workflows.
-* Verify negative and boundary scenarios.
-* Validate API behavior.
-* Validate database persistence.
-* Build automated regression coverage.
-* Generate release-quality evidence.
+El Test Plan establece qué será probado, cómo se organizará la ejecución, qué ambientes y datos serán utilizados, cuáles serán los criterios de entrada y salida y qué evidencia deberá generarse.
 
 ---
 
-## 3. Scope
+## 2. Objetivos
+
+Los objetivos son:
+
+* Validar los requisitos funcionales.
+* Validar los flujos críticos de negocio.
+* Ejecutar escenarios positivos y negativos.
+* Validar valores límite.
+* Validar APIs.
+* Validar persistencia en Database.
+* Validar integraciones.
+* Construir Automated Regression.
+* Generar evidencia de calidad.
+* Proporcionar información para decisiones de release.
+
+---
+
+## 3. Alcance
 
 ### In Scope
 
-* Authentication
-* Product Catalog
-* Product Details
-* Shopping Cart
-* Checkout
-* Payment
-* Order Creation
-* Database Persistence
-* Email Notification
-* REST APIs
-* Automation
-* CI/CD validation
-* Production smoke validation
+* Authentication.
+* Product Catalog.
+* Product Details.
+* Shopping Cart.
+* Checkout.
+* Payment.
+* Order Creation.
+* Database Persistence.
+* Email Notification.
+* REST APIs.
+* Integration Testing.
+* Automation.
+* CI/CD Validation.
+* Regression Testing.
+* Production Smoke Testing.
 
 ### Out of Scope
 
-* Application development
-* Real financial transactions
-* Full penetration testing
-* Hardware testing
-* Unrelated business processes
+En la fase actual:
+
+* Desarrollo de la aplicación.
+* Transacciones financieras reales.
+* Full Penetration Testing.
+* Hardware Testing.
+* Procesos de negocio externos no relacionados.
 
 ---
 
-## 4. Test Deliverables
+## 4. Flujo crítico
 
-* Requirements analysis
-* Acceptance criteria
-* Test scenarios
-* Test cases
-* Test data
-* RTM
-* API test cases
-* Automation code
-* Database validations
-* Defect reports
-* Execution reports
-* Regression report
-* Release checklist
-* Go/No-Go recommendation
-* Production smoke report
+Login
+ ↓
+Catalog
+ ↓
+Product
+ ↓
+Cart
+ ↓
+Checkout
+ ↓
+Payment
+ ↓
+Order
+ ↓
+Database
+ ↓
+Email
+
+Este flujo tendrá prioridad Critical dentro de Regression.
 
 ---
 
-## 5. Test Phases
+## 5. Entregables
 
-```text
+* Requirements Analysis.
+* Acceptance Criteria.
+* Test Scenarios.
+* Test Cases.
+* Test Data.
+* Requirements Traceability Matrix.
+* Decision Tables.
+* Boundary Analysis.
+* API Test Cases.
+* Automated Tests.
+* Defect Reports.
+* Test Execution Report.
+* Regression Report.
+* Release Checklist.
+* QA Recommendation.
+* Production Smoke Report.
+
+---
+
+## 6. Fases
+
 Requirements Analysis
         ↓
 Test Planning
@@ -83,194 +116,221 @@ Database Testing
         ↓
 Automation
         ↓
+CI/CD
+        ↓
 Regression
         ↓
 Release Validation
         ↓
 Production Validation
-```
 
 ---
 
-## 6. Test Types
+## 7. Tipos de pruebas
 
-* Functional
-* Positive
-* Negative
-* Boundary
-* Decision Table
-* API
-* Database
-* Integration
-* Regression
-* Smoke
-* E2E
-* Exploratory
+El proyecto utilizará, según corresponda:
 
----
-
-## 7. Test Environment
-
-Planned environments:
-
-* Local
-* QA
-* Staging
-* Production
-
-Detailed environment rules are maintained in `test-design/environment-strategy.md`.
+* Functional Testing.
+* Positive Testing.
+* Negative Testing.
+* Equivalence Partitioning.
+* Boundary Value Analysis.
+* Decision Table Testing.
+* API Testing.
+* Database Testing.
+* Integration Testing.
+* End-to-End Testing.
+* Regression Testing.
+* Smoke Testing.
+* Exploratory Testing.
+* Performance Testing.
+* Basic Security Validation.
 
 ---
 
-## 8. Test Data
+## 8. Ambientes
 
-Test data is defined in:
+Modelo:
 
-```text
+Local
+ ↓
+Development
+ ↓
+QA
+ ↓
+Staging
+ ↓
+Production
+
+La estrategia detallada se encuentra en:
+
+test-design/environment-strategy.md
+
+---
+
+## 9. Test Data
+
+Los datos deberán ser:
+
+* Controlados.
+* Predecibles.
+* Repetibles.
+* Aislados cuando sea posible.
+* No sensibles.
+
+La definición se mantiene en:
+
 test-design/test-data.md
-```
-
-Data should remain synthetic, controlled and repeatable.
 
 ---
 
-## 9. Test Execution Priorities
+## 10. Prioridades
 
 ### Critical
 
-Execute first and on every critical regression.
+Flujos que pueden impedir operaciones principales del negocio.
 
 ### High
 
-Execute as part of standard regression.
+Funcionalidades importantes con impacto significativo.
 
 ### Medium
 
-Execute based on scope and risk.
+Funcionalidades con impacto moderado.
 
 ### Low
 
-Execute where time and risk justify coverage.
+Escenarios de menor impacto.
 
 ---
 
-## 10. Planned Test Cycles
+## 11. Ciclos previstos
 
 ### Cycle 1 — Functional Validation
 
-Validate individual functional areas.
+Validación individual de funcionalidades.
 
 ### Cycle 2 — API / Integration
 
-Validate APIs and integrations.
+Validación de servicios e integraciones.
 
 ### Cycle 3 — Automated Regression
 
-Execute stable automated scenarios.
+Ejecución de escenarios automatizados estables.
 
 ### Cycle 4 — Release Regression
 
-Validate the release candidate.
+Validación del Release Candidate.
 
 ### Cycle 5 — Production Smoke
 
-Validate deployment health.
+Validación controlada posterior al deployment.
 
 ---
 
-## 11. Entry Criteria
+## 12. Entry Criteria
 
-* Build available
-* Environment stable
-* Requirements available
-* Test data prepared
-* Dependencies available
+La ejecución puede comenzar cuando:
 
----
-
-## 12. Exit Criteria
-
-* Critical tests executed
-* Critical defects resolved or accepted
-* Regression complete
-* Execution evidence generated
-* Known risks documented
-* QA recommendation generated
+* Build disponible.
+* Ambiente disponible.
+* Requisitos definidos.
+* Acceptance Criteria disponibles.
+* Test Data preparada.
+* Dependencias críticas disponibles.
 
 ---
 
-## 13. Test Suspension Criteria
+## 13. Exit Criteria
 
-Testing may be suspended when:
+Una fase puede finalizar cuando:
 
-* Environment is unavailable.
-* Build is unstable.
-* Critical dependency is unavailable.
-* Test data cannot be prepared.
-* A blocker prevents meaningful execution.
-
-Suspended tests should be reported as Blocked when appropriate.
+* Critical Tests fueron ejecutados.
+* Critical Defects fueron resueltos o aceptados formalmente.
+* Regression fue completada.
+* Evidencia fue generada.
+* Riesgos conocidos fueron documentados.
+* Quality Gates aplicables fueron evaluados.
 
 ---
 
-## 14. Defect Management
+## 14. Suspension Criteria
 
-Defects will be classified using severity and priority.
+Las pruebas podrán suspenderse cuando:
 
-Critical defects require immediate escalation.
+* El ambiente esté indisponible.
+* El Build sea inestable.
+* Una dependencia crítica esté caída.
+* No sea posible preparar Test Data.
+* Un Blocker impida continuar.
+
+Un test impedido por una dependencia deberá evaluarse como:
+
+Blocked
+
+y no automáticamente como:
+
+Failed
 
 ---
 
 ## 15. Roles
 
-| Role            | Responsibility                      |
-| --------------- | ----------------------------------- |
-| Product Owner   | Requirement/business clarification  |
-| Project Manager | Planning and coordination           |
-| QA Lead         | Test strategy and quality reporting |
-| QA Engineer     | Design, execution and automation    |
-| Development     | Defect resolution and unit testing  |
-| DevOps          | Environment and pipeline support    |
+| Rol              | Responsabilidad                    |
+| ---------------- | ---------------------------------- |
+| Product Owner    | Reglas de negocio                  |
+| Project Manager  | Planificación y coordinación       |
+| Business Analyst | Requisitos                         |
+| QA Lead          | Estrategia y reporting             |
+| QA Engineer      | Diseño, ejecución y automatización |
+| Development      | Implementación y corrección        |
+| DevOps           | Ambientes, deployment y CI/CD      |
 
 ---
 
-## 16. Risks
+## 16. Defect Management
 
-Major test risks include:
+Los defectos deberán incluir:
 
-* Requirement ambiguity
-* Environment instability
-* Payment dependency failures
-* Incomplete test data
-* Integration failures
-* Insufficient automation coverage
-* Late scope changes
-
-Detailed risks are maintained in `docs/risk-register.md`.
+* ID.
+* Summary.
+* Environment.
+* Severity.
+* Priority.
+* Preconditions.
+* Steps.
+* Actual Result.
+* Expected Result.
+* Evidence.
+* Status.
 
 ---
 
 ## 17. Reporting
 
-QA reporting should contain:
+QA reportará:
 
-* Executed
-* Passed
-* Failed
-* Blocked
-* Defects
-* Coverage
-* Risks
-* Release recommendation
+Planned
+Executed
+Passed
+Failed
+Blocked
+Not Executed
+Defects
+Coverage
+Risks
+Automation Status
+QA Recommendation
 
 ---
 
-## 18. Success Criteria
+## 18. Criterios de éxito
 
-The test effort is successful when:
+La ejecución será considerada exitosa cuando:
 
-* Critical business functionality is validated.
-* Quality evidence is traceable.
-* Critical risks are understood.
-* Required quality gates are satisfied.
-* Release decisions can be supported by evidence.
+* Los flujos críticos hayan sido validados.
+* La evidencia sea trazable.
+* Los defectos críticos sean conocidos.
+* Los riesgos residuales sean comunicados.
+* Los Quality Gates puedan ser evaluados.
+* Exista información suficiente para una decisión de release.
