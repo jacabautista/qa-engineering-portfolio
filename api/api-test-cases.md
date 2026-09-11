@@ -1,310 +1,724 @@
-# API Test Cases — QA E-Commerce Platform
+# Casos de Prueba API — QA E-Commerce Platform
 
-## 1. Purpose
+## 1. Propósito
 
-This document defines API-level test cases for the QA E-Commerce Platform.
+Este documento define los Test Cases principales para validar las APIs del proyecto **QA E-Commerce Platform**.
 
-The objective is to validate HTTP behavior, API contracts, business rules, authentication, integration behavior and data consistency independently from the user interface.
+La validación API busca comprobar no solo que una respuesta técnica sea recibida, sino que la respuesta sea correcta desde el punto de vista funcional y de negocio.
 
 ---
 
-# 2. API Testing Validation Model
+## 2. Objetivos
 
-Each API test should consider applicable validations across the following dimensions:
+API Testing debe permitir validar:
 
-```text
-Request
-   ↓
-HTTP Status
-   ↓
+* HTTP Methods.
+* Status Codes.
+* Headers.
+* Request Body.
+* Response Body.
+* JSON.
+* Authentication.
+* Authorization.
+* Business Rules.
+* Error Handling.
+* Negative Scenarios.
+* Data Consistency.
+* Integration behavior.
+
+---
+
+## 3. Principio de validación API
+
+Una validación completa no debe limitarse a:
+
+text
+HTTP 200
+
+El enfoque debe ser:
+
+text
+Status Code
+    +
 Headers
-   ↓
-Response Body
-   ↓
+    +
 Schema
-   ↓
+    +
+Values
+    +
 Business Rules
-   ↓
-Data Persistence
-```
+
+Por ejemplo:
+
+text
+GET /products/1001
+
+podría responder:
+
+json
+{
+  "id": 1002,
+  "name": "Product A"
+}
+
+aunque el `Status Code` sea `200`, el test debe fallar porque el recurso retornado no corresponde al solicitado.
 
 ---
 
-# 3. Authentication API
-
-## API-TC-001 — Successful Login
+# API-TC-001 — Login exitoso
 
 **Requirement:** FR-001
 **Acceptance Criteria:** AC-001
-**Related Functional Test:** TC-001
-**Priority:** Critical
-**Method:** POST
-**Endpoint:** `/login`
-**Test Type:** API / Functional / Positive
-**Automation Candidate:** Yes
+**Related Test Case:** TC-001
+**Prioridad:** Critical
+**Tipo:** Positive / Authentication
 
-### Request
+## Objetivo
 
-```json
+Validar que un usuario válido pueda autenticarse mediante API.
+
+## Request conceptual
+
+http
+POST /login
+Content-Type: application/json
+
+Ejemplo:
+
+json
 {
   "username": "valid_user",
   "password": "valid_password"
 }
-```
 
-### Expected Validations
+## Validaciones
 
-* Response indicates successful authentication.
-* Appropriate success HTTP status is returned according to API contract.
-* Response body contains the expected authentication information.
-* No unexpected sensitive credential information is returned.
-* Response schema matches the defined API contract.
-* Authenticated user identity corresponds to the supplied account.
+Validar:
+
+* Status Code correspondiente al contrato API.
+* `Content-Type`.
+* Response Body.
+* Authentication result.
+* Token o sesión cuando corresponda.
+* Ausencia de información sensible innecesaria.
+
+## Expected Result
+
+* Authentication exitosa.
+* Respuesta consistente con el contrato definido.
+* El usuario puede obtener la información necesaria para continuar autenticado.
 
 ---
 
-## API-TC-002 — Login with Invalid Password
+# API-TC-002 — Login con Password inválido
 
 **Requirement:** FR-001
 **Acceptance Criteria:** AC-002
-**Related Functional Test:** TC-002
-**Priority:** High
-**Method:** POST
-**Endpoint:** `/login`
-**Test Type:** API / Negative
-**Automation Candidate:** Yes
+**Related Test Case:** TC-002
+**Prioridad:** High
+**Tipo:** Negative
 
-### Request
+## Request conceptual
 
-```json
+http
+POST /login
+Content-Type: application/json
+
+json
 {
   "username": "valid_user",
-  "password": "invalid_password"
+  "password": "wrong_password"
 }
-```
 
-### Expected Validations
+## Validaciones
 
-* Authentication is rejected.
-* Successful authentication token is not returned.
-* Response follows the defined authentication error contract.
-* HTTP status matches the API specification.
-* Sensitive authentication information is not exposed.
+* Authentication debe ser rechazada.
+* No debe entregarse una sesión válida.
+* No debe generarse un token válido.
+* El Status Code debe corresponder al contrato definido.
+* El error debe utilizar el modelo de errores definido por la API.
 
 ---
 
-## API-TC-003 — Login with Missing Username
+# API-TC-003 — Username faltante
 
 **Requirement:** FR-001
 **Acceptance Criteria:** AC-004
-**Related Functional Test:** TC-004
-**Priority:** High
-**Method:** POST
-**Endpoint:** `/login`
-**Test Type:** API / Validation / Negative
-**Automation Candidate:** Yes
+**Related Test Case:** TC-004
+**Prioridad:** High
+**Tipo:** Negative / Validation
 
-### Request
+## Request
 
-```json
+json
 {
-  "password": "valid_password"
+  "password": "some_password"
 }
-```
 
-### Expected Validations
+## Expected Result
 
-* Request is rejected.
-* Validation feedback identifies the missing required information according to the API contract.
-* Authentication token is not generated.
+* Request inválido según el contrato API.
+* Authentication no debe completarse.
+* Debe aplicarse la validación de campo requerido.
+* El Status Code debe coincidir con la especificación API.
+
+QA no debe asumir automáticamente `400` o `422` si el contrato no lo define.
 
 ---
 
-## API-TC-004 — Login with Missing Password
+# API-TC-004 — Password faltante
 
 **Requirement:** FR-001
 **Acceptance Criteria:** AC-004
-**Related Functional Test:** TC-005
-**Priority:** High
-**Method:** POST
-**Endpoint:** `/login`
-**Test Type:** API / Validation / Negative
-**Automation Candidate:** Yes
+**Related Test Case:** TC-005
+**Prioridad:** High
+**Tipo:** Negative / Validation
 
-### Request
+## Request
 
-```json
+json
 {
   "username": "valid_user"
 }
-```
 
-### Expected Validations
+## Expected Result
 
-* Request is rejected.
-* Missing password is handled according to the API contract.
-* Authentication token is not generated.
+* Authentication no debe completarse.
+* Debe existir una respuesta de validación consistente.
+* El Status Code deberá validarse contra la especificación.
 
 ---
 
-# 4. Product API
-
-## API-TC-005 — Retrieve Product Catalog
+# API-TC-005 — Obtener catálogo de productos
 
 **Requirement:** FR-002
 **Acceptance Criteria:** AC-005
-**Related Functional Test:** TC-007
-**Priority:** High
-**Method:** GET
-**Endpoint:** `/products`
-**Test Type:** API / Functional / Positive
-**Automation Candidate:** Yes
+**Related Test Case:** TC-007
+**Prioridad:** High
+**Tipo:** GET / Functional
 
-### Expected Validations
+## Request conceptual
 
-* Appropriate success status is returned.
-* Response body contains the expected product collection.
-* Product representation follows the defined schema.
-* No malformed product records are returned.
-* Product availability information is consistent with the API contract.
+http
+GET /products
+Accept: application/json
+
+## Validaciones
+
+* Status Code esperado.
+* `Content-Type`.
+* Response Body no inválido.
+* Estructura JSON.
+* Productos disponibles.
+* Campos obligatorios.
+* Tipos de datos.
+* Reglas de negocio aplicables.
+
+Ejemplo conceptual:
+
+json
+[
+  {
+    "id": 1001,
+    "name": "Product A",
+    "price": 100,
+    "stock": 10
+  }
+]
+
+## Expected Result
+
+* Se obtiene el catálogo esperado.
+* Los registros cumplen el contrato API.
+* Los valores son consistentes con las reglas de negocio.
 
 ---
 
-## API-TC-006 — Retrieve Existing Product
+# API-TC-006 — Obtener producto existente
 
 **Requirement:** FR-003
 **Acceptance Criteria:** AC-007
-**Related Functional Test:** TC-009
-**Priority:** High
-**Method:** GET
-**Endpoint:** `/products/{id}`
-**Test Type:** API / Functional / Positive
-**Automation Candidate:** Yes
+**Related Test Case:** TC-009
+**Prioridad:** High
+**Tipo:** GET / Functional
 
-### Expected Validations
+## Request conceptual
 
-* Requested product is returned.
-* Product identifier matches the requested identifier.
-* Product details follow the expected schema.
-* Product data is internally consistent.
+http
+GET /products/1001
+
+## Expected Result
+
+El Response debe corresponder específicamente al producto solicitado.
+
+Ejemplo conceptual:
+
+json
+{
+  "id": 1001,
+  "name": "Product A",
+  "price": 100,
+  "stock": 10
+}
+
+## Validaciones
+
+text
+requestedId == response.id
+
+además de:
+
+* Status Code.
+* Headers.
+* JSON Schema.
+* Required Fields.
+* Data Types.
+* Business Values.
 
 ---
 
-## API-TC-007 — Retrieve Nonexistent Product
+# API-TC-007 — Obtener producto inexistente
 
 **Requirement:** FR-003
-**Priority:** Medium
-**Method:** GET
-**Endpoint:** `/products/{id}`
-**Test Type:** API / Negative
-**Automation Candidate:** Yes
+**Prioridad:** High
+**Tipo:** Negative / GET
 
-### Test Data
+## Request conceptual
 
-Use a product identifier that does not correspond to an existing product.
+http
+GET /products/999999
 
-### Expected Validations
+## Expected Result
 
-* API does not return an unrelated product.
-* Response follows the defined not-found contract.
-* HTTP status follows the API specification.
-* Unexpected internal implementation information is not exposed.
+La API debe responder de acuerdo con el contrato definido para un recurso inexistente.
+
+Validar:
+
+* Status Code.
+* Error Body.
+* Error Schema.
+* Error Message.
+* No retornar un producto diferente.
+* No producir un error interno inesperado.
+
+## Nota
+
+No se debe asumir automáticamente:
+
+text
+404
+
+hasta confirmar que ese es el comportamiento definido por la API.
 
 ---
 
-# 5. Shopping Cart API
-
-## API-TC-008 — Add Valid Product to Cart
+# API-TC-008 — Agregar producto válido al carrito
 
 **Requirement:** FR-004
 **Acceptance Criteria:** AC-009
-**Related Functional Test:** TC-011
-**Priority:** Critical
-**Method:** POST
-**Endpoint:** `/cart`
-**Test Type:** API / Functional / Positive
-**Automation Candidate:** Yes
+**Related Test Case:** TC-011
+**Prioridad:** Critical
+**Tipo:** POST / Functional
 
-### Example Request
+## Request conceptual
 
-```json
+http
+POST /cart
+Content-Type: application/json
+
+json
 {
   "productId": 1001,
   "quantity": 1
 }
-```
 
-### Expected Validations
+## Expected Result
 
-* Product is added to the cart.
-* Quantity is correctly represented.
-* Cart state reflects the new item.
-* Calculated totals remain consistent.
+* El producto correcto es agregado al carrito.
+* La cantidad es correcta.
+* El precio utilizado es consistente.
+* El Response corresponde al carrito esperado.
+
+## Validaciones
+
+* Status Code.
+* Headers.
+* Response Schema.
+* Product ID.
+* Quantity.
+* Price.
+* Cart totals cuando correspondan.
 
 ---
 
-## API-TC-009 — Add Invalid Product Quantity
+# API-TC-009 — Agregar cantidad negativa
 
 **Requirement:** FR-004
-**Related Functional Tests:** TC-013 / TC-014
-**Priority:** High
-**Method:** POST
-**Endpoint:** `/cart`
-**Test Type:** API / Boundary / Negative
-**Automation Candidate:** Yes
+**Related Test Cases:** TC-013, TC-014
+**Related Scenario:** TS-024
+**Prioridad:** High
+**Tipo:** POST / Negative / Boundary
 
-### Example Request
+## Request conceptual
 
-```json
+http
+POST /cart
+Content-Type: application/json
+
+json
 {
   "productId": 1001,
   "quantity": -1
 }
-```
 
-### Expected Validations
+## Expected Result
 
-* Invalid quantity is not accepted as a valid cart state.
-* Cart data remains consistent.
-* Response follows the defined validation contract.
+La API no debe aceptar una cantidad negativa como una cantidad válida de compra.
 
-> Exact expected HTTP status and error structure require confirmation from the API specification.
+Validar:
+
+* Request rechazado según contrato.
+* No se crea un estado inválido del carrito.
+* Error Response consistente.
+* Status Code correspondiente a la especificación.
 
 ---
 
-# 6. API Requirement Gaps
+# 4. Casos API futuros
 
-The following information must be confirmed before API assertions can be finalized:
+Conforme se avance en el proyecto se deberán incorporar casos para:
 
-* Base API URL.
-* API versioning strategy.
-* Exact endpoint paths.
+```text
+POST   /login
+GET    /products
+GET    /products/{id}
+POST   /cart
+PUT    /cart/{id}
+DELETE /cart/{id}
+POST   /checkout
+POST   /payments
+POST   /orders
+GET    /orders/{id}
+
+Los nombres exactos de endpoints deberán obtenerse del contrato real de la API.
+
+---
+
+# 5. Métodos HTTP
+
+## GET
+
+Utilizado principalmente para consultar recursos.
+
+Ejemplo:
+
+http
+GET /products
+
+---
+
+## POST
+
+Utilizado normalmente para crear recursos o iniciar operaciones.
+
+Ejemplo:
+
+http
+POST /orders
+
+---
+
+## PUT
+
+Normalmente representa una actualización completa de un recurso.
+
+Ejemplo:
+
+http
+PUT /cart/1001
+
+---
+
+## PATCH
+
+Normalmente representa una actualización parcial.
+
+Ejemplo:
+
+http
+PATCH /orders/1001
+
+---
+
+## DELETE
+
+Utilizado para eliminar un recurso cuando el contrato lo permite.
+
+Ejemplo:
+
+http
+DELETE /cart/1001
+
+---
+
+# 6. Status Codes
+
+Algunos códigos comunes que deberán conocerse son:
+
+| Status Code | Significado general   |
+| ----------: | --------------------- |
+|         200 | OK                    |
+|         201 | Created               |
+|         204 | No Content            |
+|         400 | Bad Request           |
+|         401 | Unauthorized          |
+|         403 | Forbidden             |
+|         404 | Not Found             |
+|         409 | Conflict              |
+|         422 | Unprocessable Content |
+|         500 | Internal Server Error |
+|         502 | Bad Gateway           |
+|         503 | Service Unavailable   |
+
+Estos códigos son referencias HTTP generales.
+
+El Expected Result de cada Test Case debe basarse en el contrato específico de la API.
+
+---
+
+# 7. Headers
+
+Headers comunes:
+
+http
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer <token>
+
+QA puede validar:
+
+* Header presente.
+* Valor correcto.
+* Authentication behavior.
+* Content negotiation.
+* Correlation ID cuando exista.
+
+---
+
+# 8. Authentication
+
+Cuando se utilice un token:
+
+http
+Authorization: Bearer <token>
+
+Nunca guardar un token real directamente en Git.
+
+Ejemplo utilizando variable:
+
+bash
+export TOKEN="..."
+
+Luego:
+
+bash
+curl -H "Authorization: Bearer $TOKEN" ...
+
+---
+
+# 9. JSON Validation
+
+No basta con verificar que exista un JSON.
+
+Se debe validar:
+
+Structure
+Data Types
+Required Fields
+Values
+Relationships
+Business Rules
+
+Por ejemplo:
+
+json
+{
+  "id": 1001,
+  "price": 100,
+  "stock": 10
+}
+
+Validaciones posibles:
+
+id is not null
+id is numeric
+price >= 0
+stock >= 0
+requested id == returned id
+
+Siempre que esas reglas estén definidas.
+
+---
+
+# 10. Negative Testing
+
+Las APIs deberán evaluarse también con:
+
+* Missing Fields.
+* Invalid Data Types.
+* Invalid IDs.
+* Unauthorized Requests.
+* Invalid Tokens.
+* Expired Tokens cuando corresponda.
+* Invalid Quantities.
+* Duplicate Requests.
+* Invalid State Transitions.
+
+---
+
+# 11. Business Rule Validation
+
+Ejemplo:
+
+Failed Payment
+      ↓
+No Successful Order
+
+El API Test debe validar no solo la respuesta de Payment, sino también el impacto sobre Order cuando sea posible.
+
+---
+
+# 12. Data Consistency
+
+Las pruebas futuras podrán validar:
+
+API Request
+     ↓
+API Response
+     ↓
+Database
+
+Ejemplo:
+
+POST /orders
+      ↓
+orderId = 5001
+      ↓
+Database record ID = 5001
+
+---
+
+# 13. Response Time
+
+El Response Time puede medirse, pero no debe declararse como Failed usando un límite inventado.
+
+Ejemplo:
+
+Response Time = 450 ms
+
+Para afirmar:
+
+Expected < 500 ms
+
+debe existir un Performance Requirement definido.
+
+---
+
+# 14. API Contract Gaps
+
+Antes de construir cobertura completa, aún se requiere conocer:
+
+* Base URL.
+* API Version.
+* Exact Endpoint Paths.
 * Authentication mechanism.
-* Exact request schemas.
-* Exact response schemas.
-* Required and optional headers.
-* Expected success status codes.
-* Expected validation status codes.
-* Standard API error model.
-* Pagination behavior.
-* Rate limits.
-* Timeout rules.
-* Idempotency implementation.
-* Correlation or trace identifiers.
-* API version compatibility policy.
+* Request Schemas.
+* Response Schemas.
+* Required Headers.
+* Expected Success Status Codes.
+* Validation Status Codes.
+* Error Model.
+* Pagination.
+* Rate Limits.
+* Timeout behavior.
+* Retry behavior.
+* Idempotency.
+* Correlation IDs.
+* Backward Compatibility Policy.
+
+Estos puntos deben tratarse como:
+
+API Contract Gaps
+
+y no como supuestos.
 
 ---
 
-# 7. API Test Case Completion Criteria
+# 15. Herramientas
 
-Initial API design is considered complete when:
+La progresión prevista es:
 
-* Critical endpoints have positive test coverage.
-* Negative API scenarios are represented.
-* Authentication behavior is covered.
-* Request validation is covered.
-* Status codes are verified against the API contract.
-* Response schemas are verified.
-* Business rules are validated.
-* API requirement gaps are documented.
-* Automation candidates are identified.
+curl
+  ↓
+Postman
+  ↓
+Collections
+  ↓
+Assertions
+  ↓
+Newman
+  ↓
+Automation
+  ↓
+GitHub Actions
+
+---
+
+# 16. Evidencia
+
+Durante ejecución real se deberá registrar:
+
+* Request.
+* Response.
+* Status Code.
+* Headers relevantes.
+* Test Result.
+* Environment.
+* Date/Time.
+* Defect ID cuando aplique.
+
+---
+
+# 17. Estado actual
+
+Actualmente este documento representa **API Test Design**.
+
+No significa que los Test Cases hayan sido ejecutados.
+
+API Test Cases Designed = 9
+API Test Cases Executed = 0
+Passed = 0
+Failed = 0
+Blocked = 0
+
+Estos valores deberán cambiar únicamente con resultados reales.
+
+---
+
+# 18. Principio de QA
+
+No debemos concluir:
+
+HTTP 200 = Test Passed
+
+Debemos evaluar:
+
+HTTP Response
+      +
+Contract
+      +
+Data
+      +
+Business Rule
+      =
+Test Result
