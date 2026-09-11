@@ -1,145 +1,288 @@
 # Work Breakdown Structure — QA E-Commerce Platform
 
-## 1. Purpose
+## 1. Propósito
 
-The purpose of this Work Breakdown Structure (WBS) is to decompose the QA E-Commerce Platform project into manageable phases, deliverables and activities.
+La Work Breakdown Structure (WBS) divide el proyecto en componentes y actividades manejables.
 
-The WBS provides a structured view of the work required to plan, design, execute, automate and report the quality activities throughout the software development lifecycle.
+---
 
-## 2. Project Structure
+# 1. Project Management
 
-```text
-QA E-Commerce Platform
-│
-├── 1. Project Management
-│   ├── 1.1 Project Charter
-│   ├── 1.2 Stakeholder Management
-│   ├── 1.3 RACI Matrix
-│   ├── 1.4 Scope Management
-│   ├── 1.5 Risk Management
-│   └── 1.6 Project Planning
-│
-├── 2. Requirements Analysis
-│   ├── 2.1 Requirements Review
-│   ├── 2.2 Business Flow Analysis
-│   ├── 2.3 Acceptance Criteria Review
-│   ├── 2.4 Requirement Risks
-│   └── 2.5 Requirements Traceability
-│
-├── 3. Test Planning
-│   ├── 3.1 Test Strategy
-│   ├── 3.2 Test Plan
-│   ├── 3.3 Test Scope
-│   ├── 3.4 Test Environment
-│   ├── 3.5 Test Data Strategy
-│   └── 3.6 Entry and Exit Criteria
-│
-├── 4. Test Design
-│   ├── 4.1 Test Scenarios
-│   ├── 4.2 Test Cases
-│   ├── 4.3 Negative Testing
-│   ├── 4.4 Boundary Testing
-│   ├── 4.5 Exploratory Testing
-│   └── 4.6 Requirements Traceability Matrix
-│
-├── 5. API Testing
-│   ├── 5.1 API Environment Configuration
-│   ├── 5.2 Authentication Testing
-│   ├── 5.3 REST API Testing
-│   ├── 5.4 Positive Testing
-│   ├── 5.5 Negative Testing
-│   ├── 5.6 JSON Validation
-│   └── 5.7 API Automation
-│
-├── 6. Database Testing
-│   ├── 6.1 Database Environment
-│   ├── 6.2 SQL Validation
-│   ├── 6.3 CRUD Validation
-│   ├── 6.4 Data Integrity
-│   ├── 6.5 Relationship Validation
-│   └── 6.6 Order and Customer Validation
-│
-├── 7. Web Automation
-│   ├── 7.1 Automation Framework
-│   ├── 7.2 Locator Strategy
-│   ├── 7.3 Page Object Model
-│   ├── 7.4 Authentication Automation
-│   ├── 7.5 Product Automation
-│   ├── 7.6 Cart Automation
-│   ├── 7.7 Checkout Automation
-│   ├── 7.8 Order Validation
-│   ├── 7.9 Test Data Management
-│   └── 7.10 Automation Reporting
-│
-├── 8. CI/CD
-│   ├── 8.1 Repository Configuration
-│   ├── 8.2 Pipeline Configuration
-│   ├── 8.3 Automated Test Execution
-│   ├── 8.4 Test Artifacts
-│   ├── 8.5 Quality Gates
-│   └── 8.6 Pipeline Reporting
-│
-├── 9. Regression Testing
-│   ├── 9.1 Regression Scope
-│   ├── 9.2 Critical Test Suite
-│   ├── 9.3 Automated Regression
-│   ├── 9.4 Defect Retesting
-│   └── 9.5 Regression Report
-│
-├── 10. Release Validation
-│   ├── 10.1 Release Checklist
-│   ├── 10.2 Quality Assessment
-│   ├── 10.3 Open Defect Review
-│   ├── 10.4 Risk Review
-│   └── 10.5 Go / No-Go Recommendation
-│
-└── 11. Production Validation
-    ├── 11.1 Deployment Verification
-    ├── 11.2 Production Smoke Testing
-    ├── 11.3 Critical Path Validation
-    ├── 11.4 Post-Deployment Verification
-    └── 11.5 Production Quality Report
-```
+## 1.1 Project Initiation
 
-## 3. Major Deliverables
+* 1.1.1 Crear Project Charter.
+* 1.1.2 Identificar stakeholders.
+* 1.1.3 Definir objetivos.
 
-| ID     | Workstream         | Main Deliverable                   |
-| ------ | ------------------ | ---------------------------------- |
-| WBS-01 | Project Management | Project management documentation   |
-| WBS-02 | Requirements       | Requirements analysis              |
-| WBS-03 | Test Planning      | Test Strategy and Test Plan        |
-| WBS-04 | Test Design        | Test Scenarios, Test Cases and RTM |
-| WBS-05 | API Testing        | API test suite and automation      |
-| WBS-06 | Database Testing   | Database validation scripts        |
-| WBS-07 | Web Automation     | Automated regression framework     |
-| WBS-08 | CI/CD              | Automated QA pipeline              |
-| WBS-09 | Regression         | Regression execution report        |
-| WBS-10 | Release            | Release checklist and Go/No-Go     |
-| WBS-11 | Production         | Production smoke validation        |
+## 1.2 Project Planning
 
-## 4. Dependencies
+* 1.2.1 Definir Scope.
+* 1.2.2 Crear WBS.
+* 1.2.3 Crear RACI.
+* 1.2.4 Crear Risk Register.
+* 1.2.5 Crear Project Plan.
+* 1.2.6 Crear Communication Plan.
+* 1.2.7 Crear Change Management Plan.
 
-The main project dependencies are:
+---
 
-1. Requirements must be available before detailed test design.
-2. Test environments must be available before test execution.
-3. Test data must be available before functional and automated testing.
-4. APIs must be accessible before API automation.
-5. Database access must be available for database validation.
-6. Automation framework configuration must be completed before automated regression.
-7. CI/CD infrastructure must be available before pipeline execution.
-8. Release validation depends on regression results and defect status.
-9. Production validation depends on successful deployment.
+# 2. Requirements
 
-## 5. WBS Success Criteria
+## 2.1 Requirements Analysis
 
-The WBS will be considered successfully implemented when:
+* 2.1.1 Identificar Functional Requirements.
+* 2.1.2 Analizar reglas de negocio.
+* 2.1.3 Identificar Requirement Gaps.
 
-* Project work is divided into manageable workstreams.
-* Each workstream has defined activities.
-* Major deliverables are identified.
-* Dependencies are documented.
-* QA activities cover the software lifecycle.
-* Work can be estimated and assigned.
-* Progress can be monitored against the project plan.
-* The WBS can be used as the foundation for scheduling and resource planning.
+## 2.2 Acceptance Criteria
+
+* 2.2.1 Definir criterios positivos.
+* 2.2.2 Definir criterios negativos.
+* 2.2.3 Revisar criterios con stakeholders.
+
+## 2.3 Traceability
+
+* 2.3.1 Relacionar FR.
+* 2.3.2 Relacionar AC.
+* 2.3.3 Relacionar TS.
+* 2.3.4 Relacionar TC.
+
+---
+
+# 3. Test Planning
+
+## 3.1 Test Strategy
+
+* 3.1.1 Definir niveles de prueba.
+* 3.1.2 Definir tipos de prueba.
+* 3.1.3 Definir Automation Strategy.
+* 3.1.4 Definir Quality Gates.
+
+## 3.2 Test Plan
+
+* 3.2.1 Definir In Scope.
+* 3.2.2 Definir Out of Scope.
+* 3.2.3 Definir Entry Criteria.
+* 3.2.4 Definir Exit Criteria.
+* 3.2.5 Definir ciclos.
+
+---
+
+# 4. Test Design
+
+## 4.1 Test Scenarios
+
+* Authentication.
+* Catalog.
+* Product.
+* Cart.
+* Checkout.
+* Payment.
+* Order.
+* Notification.
+
+## 4.2 Test Cases
+
+* Positive Tests.
+* Negative Tests.
+* Boundary Tests.
+* Integration Tests.
+* E2E Tests.
+
+## 4.3 Test Data
+
+* Authentication Data.
+* Product Data.
+* Cart Data.
+* Checkout Data.
+* Payment Data.
+* Order Data.
+
+## 4.4 Test Design Techniques
+
+* Equivalence Partitioning.
+* Boundary Value Analysis.
+* Decision Tables.
+* Risk-Based Testing.
+
+---
+
+# 5. API Testing
+
+## 5.1 Manual API Testing
+
+* curl.
+* GET.
+* POST.
+* PUT.
+* PATCH.
+* DELETE.
+
+## 5.2 API Validation
+
+* Status Codes.
+* Headers.
+* JSON.
+* Schema.
+* Business Rules.
+* Negative Testing.
+
+## 5.3 Postman
+
+* Collections.
+* Environments.
+* Variables.
+* Assertions.
+
+## 5.4 Newman
+
+* CLI execution.
+* Reports.
+* CI/CD integration.
+
+---
+
+# 6. Database Testing
+
+## 6.1 SQL
+
+* SELECT.
+* INSERT.
+* UPDATE.
+* DELETE.
+* JOIN.
+* Constraints.
+
+## 6.2 Data Validation
+
+* Persistence.
+* Referential Integrity.
+* Relationships.
+* UI/API/Database consistency.
+
+## 6.3 MongoDB
+
+* CRUD.
+* Documents.
+* Collections.
+* Aggregation.
+* Indexes.
+
+---
+
+# 7. Automation
+
+## 7.1 Framework Setup
+
+* Project structure.
+* Dependencies.
+* Configuration.
+* Environment variables.
+
+## 7.2 Architecture
+
+* Page Object Model.
+* Fixtures.
+* Service Objects.
+* Test Data.
+* Utilities.
+
+## 7.3 Automated Coverage
+
+* Authentication.
+* Catalog.
+* Cart.
+* Checkout.
+* API.
+* Regression.
+* Smoke.
+
+---
+
+# 8. CI/CD
+
+## 8.1 Pipeline
+
+* Checkout code.
+* Install dependencies.
+* Build.
+* Execute tests.
+* Generate reports.
+* Publish artifacts.
+
+## 8.2 Quality Controls
+
+* Automated Regression.
+* Quality Gates.
+* Secrets Management.
+
+---
+
+# 9. Test Execution
+
+## 9.1 Functional Execution
+
+* Execute.
+* Record results.
+* Collect evidence.
+
+## 9.2 Defect Management
+
+* Report.
+* Triage.
+* Retest.
+* Close.
+
+## 9.3 Regression
+
+* Define scope.
+* Execute.
+* Analyze.
+* Report.
+
+---
+
+# 10. Release
+
+## 10.1 Release Validation
+
+* Review Regression.
+* Review defects.
+* Review risks.
+* Evaluate Quality Gates.
+
+## 10.2 QA Recommendation
+
+* GO.
+* GO WITH ACCEPTED RISK.
+* NO-GO.
+
+---
+
+# 11. Production
+
+## 11.1 Deployment Validation
+
+* Application availability.
+* Critical API availability.
+
+## 11.2 Production Smoke
+
+* Critical flows.
+* Safe validation.
+
+## 11.3 Monitoring
+
+* Logs.
+* Metrics.
+* Alerts.
+
+---
+
+# 12. Continuous Improvement
+
+* Lessons Learned.
+* Escaped Defects analysis.
+* Flaky Test analysis.
+* Automation improvement.
+* Process improvement.

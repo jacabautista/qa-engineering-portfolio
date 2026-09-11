@@ -1,99 +1,86 @@
 # Change Management Plan — QA E-Commerce Platform
 
-## 1. Purpose
+## 1. Propósito
 
-This document defines the process used to identify, evaluate, approve, implement, validate and track changes within the QA E-Commerce Platform project.
+Este documento define cómo se identificarán, analizarán, aprobarán, implementarán y validarán los cambios dentro del proyecto.
 
-The objective is to prevent uncontrolled changes from negatively affecting scope, quality, schedule, testing, automation or release stability.
-
----
-
-## 2. Change Management Objectives
-
-The change management process aims to:
-
-* Prevent uncontrolled scope changes.
-* Evaluate business and technical impact.
-* Evaluate QA and testing impact.
-* Maintain requirements traceability.
-* Protect release quality.
-* Identify new risks introduced by changes.
-* Evaluate automation maintenance.
-* Control regression scope.
-* Maintain stakeholder alignment.
-* Document important decisions.
+El objetivo es prevenir cambios no controlados que puedan afectar Scope, Quality, Schedule, Testing, Automation o Release Stability.
 
 ---
 
-## 3. Change Sources
+## 2. Objetivos
 
-Changes may originate from:
-
-* Product Owner
-* Business stakeholders
-* Business Analyst
-* Project Manager
-* Development
-* QA
-* DevOps
-* Production incidents
-* Customer feedback
-* Security findings
-* Performance findings
-* Technical constraints
-* Regulatory requirements
+* Evitar Scope Creep.
+* Evaluar Business Impact.
+* Evaluar Technical Impact.
+* Evaluar QA Impact.
+* Mantener Requirements Traceability.
+* Evaluar Regression Impact.
+* Proteger Release Quality.
+* Mantener alineados a los stakeholders.
 
 ---
 
-## 4. Types of Changes
+## 3. Fuentes de cambios
 
-Changes may affect:
+Los cambios pueden originarse desde:
+
+* Product Owner.
+* Business Stakeholders.
+* Business Analyst.
+* Project Manager.
+* Development.
+* QA.
+* DevOps.
+* Production Incidents.
+* Customer Feedback.
+* Security Findings.
+* Technical Constraints.
+
+---
+
+## 4. Tipos de cambios
 
 ### Business Requirements
 
-Examples:
+Ejemplo:
 
-* New checkout rule
-* New payment method
-* New order state
+Nueva regla de Checkout.
 
 ### Functional Requirements
 
-Examples:
+Ejemplo:
 
-* New validation
-* Modified cart behavior
-* Authentication change
+Nueva validación de cantidad.
 
-### Technical Architecture
+### API
 
-Examples:
+Ejemplo:
 
-* API modification
-* Database schema change
-* New external service
+Cambio del Response Schema.
+
+### Database
+
+Ejemplo:
+
+Nueva columna o Constraint.
 
 ### Infrastructure
 
-Examples:
+Ejemplo:
 
-* Environment change
-* Deployment configuration
-* CI/CD modification
+Cambio en Deployment Configuration.
 
 ### Quality Requirements
 
-Examples:
+Ejemplo:
 
-* New performance target
-* Security requirement
-* New browser support
+Nuevo Performance Target.
 
 ---
 
-## 5. Change Management Flow
+## 5. Flujo de Change Management
 
-```text
 Change Request
       ↓
 Initial Review
@@ -117,134 +104,100 @@ Testing
 Regression
       ↓
 Traceability Update
-      ↓
-Release
-```
 
 ---
 
-## 6. Change Request Information
+## 6. Información del Change Request
 
-A change request should include:
+Debe incluir:
 
-* Change ID
-* Title
-* Description
-* Requester
-* Business reason
-* Priority
-* Affected functionality
-* Expected benefit
-* Requested release
-* Dependencies
-* Known risks
+* Change ID.
+* Title.
+* Description.
+* Requester.
+* Business Reason.
+* Priority.
+* Affected Functionality.
+* Expected Benefit.
+* Dependencies.
+* Known Risks.
 
 ---
 
-## 7. Change Classification
+## 7. Clasificación
 
-| Level    | Description                                 | Example                           |
-| -------- | ------------------------------------------- | --------------------------------- |
-| Low      | Minimal impact                              | Text or label modification        |
-| Medium   | Limited functional impact                   | Validation rule change            |
-| High     | Major business flow impact                  | Checkout workflow change          |
-| Critical | Significant business or architecture impact | Payment/order architecture change |
-
-Higher-impact changes require deeper testing and regression analysis.
+| Nivel    | Descripción                       | Ejemplo              |
+| -------- | --------------------------------- | -------------------- |
+| Low      | Impacto mínimo                    | Cambio de texto      |
+| Medium   | Impacto funcional limitado        | Nueva validación     |
+| High     | Impacto sobre flujo principal     | Cambio en Checkout   |
+| Critical | Impacto financiero/arquitectónico | Cambio Payment/Order |
 
 ---
 
 ## 8. QA Impact Analysis
 
-For every relevant change, QA should evaluate:
+QA evaluará:
 
-* Requirements affected
-* Acceptance criteria affected
-* Test scenarios affected
-* Test cases affected
-* Test data affected
-* Decision tables affected
-* Boundary analysis affected
-* APIs affected
-* Database affected
-* UI affected
-* Automation affected
-* Regression scope
-* Performance impact
-* Security impact
-* Environment impact
-* Release risk
+* Requirements afectados.
+* Acceptance Criteria afectados.
+* Test Scenarios afectados.
+* Test Cases afectados.
+* Test Data afectada.
+* Decision Tables.
+* Boundary Analysis.
+* APIs.
+* Database.
+* UI.
+* Automation.
+* Regression Scope.
+* Performance.
+* Security.
+* Environments.
+* Release Risk.
 
 ---
 
-## 9. Example — Maximum Product Quantity
+## 9. Ejemplo
 
-Assume the Product Owner introduces the following requirement:
+Nuevo requisito:
 
-```text
 Maximum product quantity per cart item = 10
-```
 
-QA should not only create one additional test.
+Impacto:
 
-The impact should be evaluated across:
-
-```text
 Requirement
-      ↓
+     ↓
 Acceptance Criteria
-      ↓
+     ↓
 Boundary Analysis
-      ↓
+     ↓
 Test Scenarios
-      ↓
+     ↓
 Test Cases
-      ↓
+     ↓
 API Tests
-      ↓
+     ↓
 Automation
-      ↓
+     ↓
 Regression
-      ↓
+     ↓
 RTM
-```
 
-Possible boundary values become:
+Nuevos límites:
 
-| Quantity | Expected Classification             |
-| -------: | ----------------------------------- |
-|        0 | Invalid / business-defined behavior |
-|        1 | Minimum valid                       |
-|        9 | Valid                               |
-|       10 | Maximum valid                       |
-|       11 | Invalid                             |
-
-This demonstrates that a business change can affect multiple QA artifacts.
+| Quantity | Clasificación              |
+| -------: | -------------------------- |
+|        0 | Invalid / Business-defined |
+|        1 | Minimum Valid              |
+|        9 | Valid                      |
+|       10 | Maximum Valid              |
+|       11 | Invalid                    |
 
 ---
 
-## 10. Change Approval Criteria
+## 10. Decisiones posibles
 
-Before approving a change, stakeholders should evaluate:
-
-* Business value
-* Technical feasibility
-* Development effort
-* QA effort
-* Schedule impact
-* Cost impact
-* Dependencies
-* Risks
-* Regression impact
-* Release impact
-
----
-
-## 11. Change Decision
-
-A requested change may be:
-
-```text
 APPROVED
 
 REJECTED
@@ -252,135 +205,85 @@ REJECTED
 DEFERRED
 
 NEEDS CLARIFICATION
-```
 
-The decision and rationale should be documented.
-
----
-
-## 12. Requirement Traceability
-
-When an approved change affects requirements, QA should update applicable artifacts.
-
-Potentially affected documents include:
-
-```text
-management/scope.md
-
-requirements/requirements-analysis.md
-requirements/acceptance-criteria.md
-requirements/test-scenarios.md
-
-test-design/test-cases.md
-test-design/test-data.md
-test-design/traceability-matrix.md
-test-design/decision-tables.md
-test-design/boundary-analysis.md
-
-api/api-test-cases.md
-```
-
-Automation should also be updated when affected.
+La decisión deberá quedar documentada.
 
 ---
 
-## 13. Regression Impact Analysis
+## 11. Regression Impact
 
-Each approved change should answer:
+Cada cambio debe responder:
 
-```text
 What changed?
 
 What could this change break?
 
-Which tests validate the change?
+Which Test Cases validate it?
 
 Which existing tests must be rerun?
 
-Which automated tests must be updated?
+Which Automated Tests must be updated?
 
 Which integrations could be affected?
-```
-
-Regression should be based on risk and impact rather than blindly executing every available test.
 
 ---
 
-## 14. Automation Impact
+## 12. Automation Impact
 
-Changes may require:
+Un cambio puede requerir:
 
-* Locator updates
-* API payload changes
-* Schema updates
-* Test data updates
-* Page Object changes
-* Assertions updates
-* Environment configuration updates
-* Pipeline updates
-
-Automation maintenance effort should be considered during change estimation.
+* Locator updates.
+* API payload changes.
+* Schema updates.
+* Test Data updates.
+* Page Object updates.
+* Assertions updates.
+* Environment configuration.
+* Pipeline updates.
 
 ---
 
-## 15. Database Impact
+## 13. Database Impact
 
-Database-related changes should evaluate:
+Evaluar:
 
-* Schema modifications
-* New columns
-* Removed columns
-* Relationships
-* Constraints
-* Data migration
-* Referential integrity
-* Backward compatibility
-
-Database validation should be added when required.
+* Schema.
+* Columns.
+* Relationships.
+* Constraints.
+* Migration.
+* Referential Integrity.
+* Backward Compatibility.
 
 ---
 
-## 16. API Impact
+## 14. API Impact
 
-API changes should evaluate:
+Evaluar:
 
-* Endpoint changes
-* HTTP method changes
-* Request schema
-* Response schema
-* Authentication
-* Headers
-* Status codes
-* Error model
-* Versioning
-* Backward compatibility
-
-API contracts should be updated before affected automated tests are considered stable.
+* Endpoint.
+* HTTP Method.
+* Request Schema.
+* Response Schema.
+* Authentication.
+* Headers.
+* Status Codes.
+* Error Model.
+* Versioning.
+* Backward Compatibility.
 
 ---
 
-## 17. Risk Register Update
+## 15. Risk Register
 
-If a change introduces a new significant risk, update:
+Los nuevos riesgos significativos deberán agregarse a:
 
-`docs/risk-register.md`
-
-Examples:
-
-* Payment integration changed.
-* New external dependency introduced.
-* Database migration required.
-* Authentication mechanism changed.
+docs/risk-register.md
 
 ---
 
-## 18. Scope Creep Prevention
+## 16. Scope Creep Prevention
 
-A new request should not silently become part of committed project scope.
-
-The expected process is:
-
-```text
 New Request
      ↓
 Evaluate
@@ -392,78 +295,49 @@ Approve
 Update Scope
      ↓
 Implement
-```
 
-This protects schedule, cost and quality.
-
----
-
-## 19. Emergency Changes
-
-Emergency production changes may require an accelerated process.
-
-Minimum controls should include:
-
-* Clear justification
-* Identified owner
-* Risk assessment
-* Required approval
-* Minimum necessary testing
-* Production smoke testing
-* Monitoring
-* Rollback consideration
-* Post-change review
-
-Urgency should not eliminate quality controls entirely.
+Un nuevo requerimiento no debe convertirse silenciosamente en Scope comprometido.
 
 ---
 
-## 20. Post-Change Validation
+## 17. Emergency Changes
 
-After implementation, QA should validate:
+Un Emergency Change deberá considerar como mínimo:
 
-* Requested behavior
-* Related functionality
-* Regression scope
-* Data integrity
-* API behavior where applicable
-* Automation status
-* Environment health
-
-Evidence should be maintained when appropriate.
-
----
-
-## 21. Release Impact
-
-Changes introduced late in a release should receive additional scrutiny.
-
-QA should communicate:
-
-* Testing completed
-* Testing pending
-* Open defects
-* Regression impact
-* Known risks
-* Residual risk
-
-This information contributes to the Go/No-Go decision.
+* Justificación.
+* Owner.
+* Risk Assessment.
+* Approval.
+* Minimum Testing.
+* Production Smoke.
+* Monitoring.
+* Rollback consideration.
+* Post-change review.
 
 ---
 
-## 22. Change Management Principle
+## 18. Post-Change Validation
 
-A key project principle is:
+QA deberá validar:
 
-```text
+* Nuevo comportamiento.
+* Funcionalidad relacionada.
+* Regression Scope.
+* Data Integrity.
+* API behavior.
+* Automation status.
+* Environment health.
+
+---
+
+## 19. Principio
+
 Code Change
     ≠
 Complete Change
-```
 
-A change may require updates to:
+Un cambio puede afectar:
 
-```text
 Requirements
 Tests
 Automation
@@ -474,34 +348,17 @@ Documentation
 CI/CD
 Risk Register
 Release Documentation
-```
 
 ---
 
-## 23. Completion Criteria
+## 20. Criterio de finalización
 
-The Change Management process is considered established when:
+El proceso se considera establecido cuando:
 
-* Change sources are defined.
-* Change classification exists.
-* Impact analysis is required.
-* QA impact is evaluated.
-* Approval decisions are documented.
-* Regression impact is considered.
-* Traceability is maintained.
-* Emergency changes are controlled.
-
----
-
-## 24. Continuous Improvement
-
-After major releases, the team should review:
-
-* Late changes
-* Unplanned scope
-* Change-related defects
-* Regression escapes
-* Incorrect impact analysis
-* Automation maintenance cost
-
-Lessons learned should improve future change decisions.
+* Los cambios son identificados.
+* Existe Impact Analysis.
+* QA Impact es evaluado.
+* Las decisiones son documentadas.
+* Regression Impact es evaluado.
+* La trazabilidad se mantiene.
+* Los Emergency Changes están controlados.

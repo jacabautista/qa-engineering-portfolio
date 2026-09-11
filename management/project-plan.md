@@ -1,139 +1,320 @@
 # Project Plan — QA E-Commerce Platform
 
-## 1. Purpose
+## 1. Propósito
 
-The purpose of this Project Plan is to define the activities, responsibilities, dependencies, estimated duration and deliverables required to execute the QA E-Commerce Platform project.
+Este documento define el plan general para ejecutar las actividades de Quality Assurance y Quality Engineering del proyecto **QA E-Commerce Platform**.
 
-The plan provides a baseline for monitoring project progress, identifying delays, managing dependencies and coordinating QA activities throughout the software lifecycle.
+El Project Plan organiza las principales fases, actividades, entregables, dependencias, responsabilidades y criterios de seguimiento necesarios para llevar el proyecto desde la planificación hasta la validación en producción.
 
-## 2. Project Planning Approach
+---
 
-The project will be executed through sequential and iterative QA activities covering:
+## 2. Objetivos del proyecto
 
-* Project Management
-* Requirements Analysis
-* Test Planning
-* Test Design
-* API Testing
-* Database Testing
-* Web Automation
-* CI/CD
-* Regression Testing
-* Release Validation
-* Production Validation
+Los principales objetivos son:
 
-The plan may be updated when approved scope changes, risks, dependencies or project priorities require adjustments.
+* Definir una estrategia integral de calidad.
+* Analizar los requisitos funcionales.
+* Identificar riesgos de negocio y técnicos.
+* Diseñar escenarios y casos de prueba.
+* Implementar API Testing.
+* Implementar Database Testing.
+* Construir Web Automation.
+* Integrar pruebas automatizadas con CI/CD.
+* Ejecutar Regression Testing.
+* Generar evidencia para Release Decisions.
+* Validar el sistema después del deployment.
+* Implementar métricas de calidad y mejora continua.
 
-## 3. Project Activities
+---
 
-| ID     | Phase         | Activity                      | Responsible                     | Duration | Dependency     | Deliverable            | Status  |
-| ------ | ------------- | ----------------------------- | ------------------------------- | -------: | -------------- | ---------------------- | ------- |
-| PP-001 | Management    | Project Charter               | QA Lead                         |    1 day | —              | Project Charter        | Done    |
-| PP-002 | Management    | Stakeholder Identification    | QA Lead                         |    1 day | PP-001         | Stakeholder Register   | Done    |
-| PP-003 | Management    | RACI Definition               | QA Lead                         |    1 day | PP-002         | RACI Matrix            | Done    |
-| PP-004 | Management    | Scope Definition              | QA Lead                         |    1 day | PP-001         | Project Scope          | Done    |
-| PP-005 | Management    | Risk Identification           | QA Lead                         |    1 day | PP-001         | Risk Register          | Done    |
-| PP-006 | Management    | WBS Definition                | QA Lead                         |    1 day | PP-004         | WBS                    | Done    |
-| PP-007 | Requirements  | Requirements Analysis         | QA Lead / QA Engineer           |   2 days | PP-006         | Requirements Analysis  | Planned |
-| PP-008 | Requirements  | Acceptance Criteria Review    | QA Engineer                     |    1 day | PP-007         | Acceptance Criteria    | Planned |
-| PP-009 | Requirements  | Requirements Traceability     | QA Engineer                     |    1 day | PP-008         | RTM                    | Planned |
-| PP-010 | Test Planning | Test Strategy                 | QA Lead                         |   2 days | PP-007         | Test Strategy          | Planned |
-| PP-011 | Test Planning | Test Plan                     | QA Lead                         |   2 days | PP-010         | Test Plan              | Planned |
-| PP-012 | Test Planning | Test Environment Definition   | QA Engineer                     |    1 day | PP-011         | Environment Plan       | Planned |
-| PP-013 | Test Planning | Test Data Strategy            | QA Engineer                     |    1 day | PP-011         | Test Data Strategy     | Planned |
-| PP-014 | Test Design   | Test Scenarios                | QA Engineer                     |   2 days | PP-011         | Test Scenarios         | Planned |
-| PP-015 | Test Design   | Test Cases                    | QA Engineer                     |   3 days | PP-014         | Test Cases             | Planned |
-| PP-016 | Test Design   | RTM Completion                | QA Engineer                     |    1 day | PP-009, PP-015 | RTM                    | Planned |
-| PP-017 | API           | API Environment Configuration | QA Engineer                     |    1 day | PP-012         | API Environment        | Planned |
-| PP-018 | API           | API Functional Testing        | QA Engineer                     |   3 days | PP-017         | API Test Results       | Planned |
-| PP-019 | API           | API Automation                | QA Automation Engineer          |   4 days | PP-018         | API Automation Suite   | Planned |
-| PP-020 | Database      | Database Environment          | QA Engineer                     |    1 day | PP-012         | DB Environment         | Planned |
-| PP-021 | Database      | SQL Validation                | QA Engineer                     |   3 days | PP-020         | SQL Validation Results | Planned |
-| PP-022 | Database      | Data Integrity Validation     | QA Engineer                     |   2 days | PP-021         | Data Validation Report | Planned |
-| PP-023 | Automation    | Web Automation Framework      | QA Automation Engineer          |   3 days | PP-015         | Automation Framework   | Planned |
-| PP-024 | Automation    | Page Object Model             | QA Automation Engineer          |   2 days | PP-023         | POM Structure          | Planned |
-| PP-025 | Automation    | Critical Flow Automation      | QA Automation Engineer          |   5 days | PP-024         | Automated Tests        | Planned |
-| PP-026 | Automation    | Automation Reporting          | QA Automation Engineer          |   2 days | PP-025         | Automation Report      | Planned |
-| PP-027 | CI/CD         | CI Pipeline Configuration     | QA Automation Engineer / DevOps |   2 days | PP-019, PP-025 | CI Pipeline            | Planned |
-| PP-028 | CI/CD         | Automated Regression Pipeline | QA Automation Engineer          |   2 days | PP-027         | Regression Pipeline    | Planned |
-| PP-029 | Regression    | Regression Execution          | QA Team                         |   2 days | PP-028         | Regression Report      | Planned |
-| PP-030 | Regression    | Defect Retesting              | QA Engineer                     |   2 days | PP-029         | Retest Results         | Planned |
-| PP-031 | Release       | Release Quality Assessment    | QA Lead                         |    1 day | PP-029, PP-030 | Quality Assessment     | Planned |
-| PP-032 | Release       | Go / No-Go Recommendation     | QA Lead                         |    1 day | PP-031         | Go/No-Go               | Planned |
-| PP-033 | Production    | Deployment Verification       | QA Lead / DevOps                |    1 day | PP-032         | Deployment Validation  | Planned |
-| PP-034 | Production    | Production Smoke Testing      | QA Engineer                     |    1 day | PP-033         | Smoke Results          | Planned |
-| PP-035 | Production    | Post-Deployment Verification  | QA Lead                         |    1 day | PP-034         | Production Report      | Planned |
+## 3. Flujo general del proyecto
 
-## 4. Major Milestones
+Planning
+   ↓
+Requirements Analysis
+   ↓
+Test Design
+   ↓
+API Testing
+   ↓
+Database Testing
+   ↓
+Automation
+   ↓
+CI/CD
+   ↓
+Regression
+   ↓
+Release Validation
+   ↓
+Production Smoke
+   ↓
+Monitoring
+   ↓
+Continuous Improvement
 
-| Milestone | Description                  | Expected Result                          |
-| --------- | ---------------------------- | ---------------------------------------- |
-| M-001     | Project Initiation           | Management documentation completed       |
-| M-002     | Requirements Ready           | Requirements analyzed and traceable      |
-| M-003     | Test Planning Complete       | Test Strategy and Test Plan approved     |
-| M-004     | Test Design Complete         | Test scenarios and cases available       |
-| M-005     | API Validation Complete      | API tests and automation available       |
-| M-006     | Database Validation Complete | Database validation completed            |
-| M-007     | Automation Ready             | Critical flows automated                 |
-| M-008     | CI/CD Ready                  | Automated tests integrated into pipeline |
-| M-009     | Regression Complete          | Regression results available             |
-| M-010     | Release Decision             | Go/No-Go recommendation issued           |
-| M-011     | Production Validation        | Production smoke validation completed    |
+---
 
-## 5. Dependencies
+## 4. Fase 1 — Project Planning
 
-The project contains several critical dependencies:
+### Actividades
 
-1. Requirements analysis must be completed before detailed test design.
-2. Test planning depends on understanding project requirements.
-3. Test cases depend on approved acceptance criteria.
-4. API automation depends on API availability and stable endpoints.
-5. Database validation depends on database access and test data.
-6. Web automation depends on stable application functionality.
-7. CI/CD automation depends on completed automated test suites.
-8. Release decisions depend on regression results, defects and risks.
-9. Production validation depends on successful deployment.
+* Crear Project Charter.
+* Identificar stakeholders.
+* Definir alcance.
+* Crear WBS.
+* Definir RACI.
+* Identificar riesgos.
+* Crear Project Plan.
+* Definir Communication Plan.
+* Definir Change Management.
 
-## 6. Progress Monitoring
+### Entregables
 
-Project progress will be monitored using:
+* `docs/project-charter.md`
+* `management/stakeholder-register.md`
+* `management/scope.md`
+* `management/wbs.md`
+* `management/raci.md`
+* `docs/risk-register.md`
+* `management/project-plan.md`
+* `management/communication-plan.md`
+* `management/change-management.md`
 
-* Completed activities
-* Planned activities
-* Percentage of completion
-* Schedule deviations
-* Open dependencies
-* Open risks
-* Blocking issues
-* Defect status
-* Test execution status
-* Automation progress
+---
 
-The project plan should be reviewed periodically and updated when significant changes occur.
+## 5. Fase 2 — Requirements Analysis
 
-## 7. Schedule Control
+### Actividades
 
-Any significant deviation from the planned schedule must be evaluated for its impact on:
+* Analizar requisitos funcionales.
+* Identificar Requirement Gaps.
+* Definir Acceptance Criteria.
+* Evaluar riesgos asociados.
+* Establecer trazabilidad inicial.
 
-* Project scope
-* QA coverage
-* Resources
-* Dependencies
-* Risks
-* Release date
-* Quality
+### Entregables
 
-Schedule changes must be communicated to the appropriate stakeholders.
+* `requirements/requirements-analysis.md`
+* `requirements/acceptance-criteria.md`
 
-## 8. Project Plan Success Criteria
+---
 
-The Project Plan will be considered successfully implemented when:
+## 6. Fase 3 — Test Design
 
-* All major project activities are identified.
-* Activities have assigned responsibilities.
-* Dependencies are documented.
-* Major deliverables are defined.
-* Milestones are established.
-* Progress can be monitored.
-* Schedule deviations can be identified.
-* The plan supports project and release decisions.
+### Actividades
+
+* Diseñar Test Scenarios.
+* Diseñar Test Cases.
+* Definir Test Data.
+* Aplicar Equivalence Partitioning.
+* Aplicar Boundary Value Analysis.
+* Aplicar Decision Tables.
+* Crear Requirements Traceability Matrix.
+* Definir Environment Strategy.
+
+### Entregables
+
+* `requirements/test-scenarios.md`
+* `test-design/test-cases.md`
+* `test-design/test-data.md`
+* `test-design/boundary-analysis.md`
+* `test-design/decision-tables.md`
+* `test-design/traceability-matrix.md`
+* `test-design/environment-strategy.md`
+
+---
+
+## 7. Fase 4 — API Testing
+
+### Actividades
+
+* Analizar endpoints.
+* Ejecutar requests manuales.
+* Validar HTTP Methods.
+* Validar Status Codes.
+* Validar Headers.
+* Validar JSON.
+* Realizar Negative Testing.
+* Crear Postman Collections.
+* Implementar Assertions.
+* Ejecutar pruebas mediante Newman.
+
+### Herramientas
+
+* curl
+* Postman
+* Newman
+
+### Entregables
+
+* `api/api-test-cases.md`
+* Postman Collection.
+* Environment configuration.
+* API execution evidence.
+
+---
+
+## 8. Fase 5 — Database Testing
+
+### Actividades
+
+* Validar CRUD.
+* Validar persistencia.
+* Validar relaciones.
+* Validar integridad referencial.
+* Comparar información UI/API/Database.
+* Validar Order Data.
+
+### Tecnologías previstas
+
+* SQL.
+* MongoDB cuando corresponda.
+
+---
+
+## 9. Fase 6 — Test Automation
+
+### Actividades
+
+* Seleccionar Automation Candidates.
+* Crear framework.
+* Implementar Page Object Model.
+* Crear fixtures.
+* Separar Test Data.
+* Configurar environments.
+* Implementar assertions.
+* Implementar logging y evidencia.
+* Ejecutar pruebas en paralelo cuando sea conveniente.
+
+### Objetivo
+
+Automatizar principalmente:
+
+* Critical Flows.
+* Regression.
+* Smoke Tests.
+* API Tests.
+* Repetitive Tests.
+
+---
+
+## 10. Fase 7 — CI/CD
+
+### Actividades
+
+* Configurar pipeline.
+* Ejecutar automated tests.
+* Administrar secrets.
+* Publicar artifacts.
+* Generar reports.
+* Aplicar Quality Gates.
+
+### Herramientas previstas
+
+* GitHub Actions.
+* Jenkins cuando corresponda.
+* Docker.
+
+---
+
+## 11. Fase 8 — Regression Testing
+
+### Actividades
+
+* Definir Regression Scope.
+* Priorizar pruebas según riesgo.
+* Ejecutar manual y automated regression.
+* Analizar Failed Tests.
+* Analizar Blocked Tests.
+* Revisar defectos.
+* Actualizar riesgos.
+
+---
+
+## 12. Fase 9 — Release Validation
+
+### Actividades
+
+* Revisar Regression Results.
+* Revisar defectos abiertos.
+* Evaluar riesgos residuales.
+* Revisar Quality Gates.
+* Crear Release Checklist.
+* Emitir QA Recommendation.
+
+Posibles recomendaciones:
+
+GO
+GO WITH ACCEPTED RISK
+NO-GO
+
+---
+
+## 13. Fase 10 — Production Validation
+
+### Actividades
+
+* Validar deployment.
+* Ejecutar Production Smoke.
+* Verificar endpoints críticos.
+* Revisar logs.
+* Revisar monitoring.
+* Reportar incidentes.
+
+---
+
+## 14. Fase 11 — Continuous Improvement
+
+### Actividades
+
+* Analizar Escaped Defects.
+* Revisar Flaky Tests.
+* Revisar Automation Coverage.
+* Analizar tiempos de ejecución.
+* Documentar Lessons Learned.
+* Mejorar procesos y estándares.
+
+---
+
+## 15. Dependencias principales
+
+El proyecto depende de:
+
+* Requisitos suficientemente definidos.
+* Disponibilidad de ambientes.
+* Test Data.
+* APIs.
+* Database.
+* Payment Sandbox o mocks.
+* Acceso a CI/CD.
+* Herramientas de automatización.
+
+---
+
+## 16. Seguimiento
+
+El progreso será evaluado utilizando:
+
+* Entregables completados.
+* Requirements Coverage.
+* Test Design Coverage.
+* Test Execution Coverage.
+* Automation Coverage.
+* Defect Metrics.
+* Risk Status.
+* Quality Gates.
+
+---
+
+## 17. Criterio de finalización
+
+El proyecto QA será considerado completado cuando:
+
+* Los flujos críticos hayan sido validados.
+* La trazabilidad esté actualizada.
+* La Regression requerida haya sido completada.
+* Los riesgos residuales estén documentados.
+* La recomendación de QA haya sido emitida.
+* Production Smoke haya sido ejecutado cuando exista deployment.
+* Las Lessons Learned hayan sido registradas.

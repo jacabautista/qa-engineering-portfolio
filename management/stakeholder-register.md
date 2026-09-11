@@ -1,87 +1,187 @@
 # Stakeholder Register — QA E-Commerce Platform
 
-## 1. Purpose
+## 1. Propósito
 
-The purpose of this stakeholder register is to identify the main stakeholders involved in the QA E-Commerce Platform project, understand their level of interest and influence, and establish an appropriate communication approach.
+Este documento identifica a los principales stakeholders del proyecto y describe sus intereses, responsabilidades, influencia y necesidades de comunicación.
 
-## 2. Stakeholder Identification
+---
 
-| ID      | Stakeholder           | Role               | Interest | Influence | Impact on QA | Communication                             |
-| ------- | --------------------- | ------------------ | -------- | --------- | ------------ | ----------------------------------------- |
-| STK-001 | Product Owner         | Business           | High     | High      | High         | Requirements, demos, release decisions    |
-| STK-002 | Project Manager       | Project Management | High     | High      | High         | Status, risks, issues, milestones         |
-| STK-003 | QA Lead               | Quality            | High     | High      | High         | Quality strategy, metrics, risks, release |
-| STK-004 | QA Engineer           | Testing            | High     | Medium    | High         | Test execution, defects, automation       |
-| STK-005 | Developer Lead        | Development        | High     | High      | High         | Defects, technical risks, quality gates   |
-| STK-006 | Developers            | Development        | High     | Medium    | High         | Defects, test results, technical feedback |
-| STK-007 | DevOps Engineer       | Infrastructure     | Medium   | High      | High         | CI/CD, environments, deployments          |
-| STK-008 | DBA                   | Database           | Medium   | Medium    | Medium       | Database validation and incidents         |
-| STK-009 | Business Stakeholders | Business           | High     | Medium    | High         | Requirements, quality status, release     |
-| STK-010 | End User              | Customer           | High     | Medium    | High         | Product quality and usability             |
+## 2. Stakeholders
 
-## 3. Stakeholder Analysis
+| Stakeholder      | Responsabilidad principal                       | Interés | Influencia |
+| ---------------- | ----------------------------------------------- | ------- | ---------- |
+| Product Owner    | Priorizar producto y reglas de negocio          | Alta    | Alta       |
+| Project Manager  | Coordinar alcance, tiempo y riesgos             | Alta    | Alta       |
+| Business Analyst | Analizar y clarificar requisitos                | Alta    | Media      |
+| QA Lead          | Definir estrategia de calidad                   | Alta    | Alta       |
+| QA Engineer      | Diseñar, ejecutar y automatizar pruebas         | Alta    | Media      |
+| Development Lead | Liderar implementación técnica                  | Alta    | Alta       |
+| Developer        | Implementar funcionalidades y corregir defectos | Alta    | Media      |
+| DevOps Engineer  | Gestionar ambientes y CI/CD                     | Alta    | Alta       |
+| Customer Support | Comunicar problemas de usuarios                 | Media   | Media      |
+| End Users        | Utilizar el producto                            | Alta    | Baja       |
 
-### High Interest / High Influence
+---
 
-These stakeholders require close management:
+## 3. Product Owner
 
-* Product Owner
-* Project Manager
-* QA Lead
-* Developer Lead
+### Intereses
 
-They participate in important decisions involving scope, quality, risks, defects and release readiness.
+* Business Value.
+* Funcionalidad correcta.
+* Release oportuno.
+* Experiencia del usuario.
 
-### High Interest / Medium Influence
+### Información requerida
 
-These stakeholders require regular communication:
+* Riesgos críticos.
+* Defectos de negocio.
+* Release Readiness.
+* Requirement Gaps.
 
-* QA Engineer
-* Developers
-* Business Stakeholders
-* End User
+---
 
-Their feedback is important for validating product quality and identifying problems.
+## 4. Project Manager
 
-### Medium Interest / High Influence
+### Intereses
 
-These stakeholders must be kept sufficiently informed:
+* Scope.
+* Schedule.
+* Risks.
+* Dependencies.
+* Delivery.
 
-* DevOps Engineer
+### Información requerida
 
-Infrastructure, environments and deployment processes can directly affect testing and release activities.
+* QA Progress.
+* Blockers.
+* Quality Risks.
+* Release Status.
 
-## 4. Communication Principles
+---
 
-The project will follow these principles:
+## 5. Business Analyst
 
-1. Critical risks must be communicated as soon as they are identified.
-2. Critical and high-severity defects must be visible to the appropriate stakeholders.
-3. Quality status must be reported using objective evidence and metrics.
-4. Release decisions must be based on defined quality gates.
-5. Changes in scope must be evaluated for their impact on testing, automation, risks and schedule.
-6. Communication must be traceable through the project's documentation and collaboration tools.
+### Intereses
 
-## 5. QA Lead Responsibility
+* Requisitos claros.
+* Reglas de negocio correctas.
+* Acceptance Criteria verificables.
 
-The QA Lead is responsible for ensuring that relevant stakeholders receive timely and objective information about:
+### Colaboración con QA
 
-* Test progress
-* Test coverage
-* Defect status
-* Quality risks
-* Automation status
-* Regression results
-* Environment issues
-* Release readiness
-* Production validation
+Requirement Gap
+      ↓
+BA / PO Clarification
+      ↓
+Requirement Update
+      ↓
+Test Design
 
-## 6. Success Criteria
+---
 
-The stakeholder management approach will be considered effective when:
+## 6. QA Lead
 
-* Key stakeholders are identified.
-* Responsibilities and communication needs are understood.
-* Critical risks are escalated appropriately.
-* Quality information is available before release decisions.
-* Stakeholders have visibility into the project's quality status.
+### Responsabilidades
+
+* Test Strategy.
+* Test Planning.
+* Risk-Based Testing.
+* Quality Metrics.
+* Quality Gates.
+* Release Recommendation.
+* QA Communication.
+
+---
+
+## 7. QA Engineer
+
+### Responsabilidades
+
+* Requirements Review.
+* Test Design.
+* Test Execution.
+* API Testing.
+* Database Testing.
+* Automation.
+* Defect Reporting.
+* Evidence generation.
+
+---
+
+## 8. Development
+
+Development debe colaborar en:
+
+* Unit Testing.
+* Technical clarification.
+* Defect analysis.
+* Defect resolution.
+* Code Review.
+* Testability.
+
+---
+
+## 9. DevOps
+
+Responsable principalmente de:
+
+* Environments.
+* Deployment.
+* CI/CD.
+* Secrets.
+* Pipeline.
+* Monitoring support.
+
+---
+
+## 10. Customer Support
+
+Puede aportar:
+
+* Production Issues.
+* Customer Feedback.
+* Recurrent Problems.
+* Business Impact.
+
+Esta información puede alimentar Risk-Based Testing y Regression.
+
+---
+
+## 11. End Users
+
+Los End Users esperan principalmente:
+
+* Disponibilidad.
+* Correctitud.
+* Seguridad.
+* Rendimiento.
+* Experiencia consistente.
+
+---
+
+## 12. Estrategia de participación
+
+High Influence + High Interest
+        ↓
+Manage Closely
+
+High Influence + Lower Interest
+        ↓
+Keep Satisfied
+
+Lower Influence + High Interest
+        ↓
+Keep Informed
+
+---
+
+## 13. Criterios de éxito
+
+La gestión de stakeholders será exitosa cuando:
+
+* Los stakeholders estén identificados.
+* Las responsabilidades sean claras.
+* Los riesgos sean escalados correctamente.
+* La información de calidad sea visible.
+* Las decisiones importantes sean trazables.

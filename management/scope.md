@@ -1,199 +1,213 @@
 # Project Scope — QA E-Commerce Platform
 
-## 1. Purpose
+## 1. Propósito
 
-The purpose of this document is to define the scope of the QA E-Commerce Platform project, including the testing activities, systems, deliverables and quality activities that are included and excluded from the project.
+Este documento define el alcance del proyecto QA E-Commerce Platform.
 
-## 2. Project Objective
+Su objetivo es establecer claramente qué actividades y funcionalidades forman parte del proyecto y cuáles quedan fuera del alcance actual.
 
-The project objective is to design and implement a quality engineering approach for an e-commerce platform covering functional validation, API testing, database validation, test automation, continuous integration and production smoke validation.
+---
 
-## 3. In Scope
+## 2. Objetivo del alcance
 
-The following activities are included in the project scope:
+Validar la calidad de una plataforma de comercio electrónico mediante prácticas de Quality Engineering que cubran requisitos, funcionalidad, APIs, Database, automatización, CI/CD, Regression y Release Validation.
+
+---
+
+## 3. Funcionalidades In Scope
+
+### Authentication
+
+* Registro cuando corresponda.
+* Login.
+* Validación de credenciales.
+* Manejo de errores.
+* Control de acceso.
+
+### Product Catalog
+
+* Visualización de productos.
+* Disponibilidad.
+* Selección.
+
+### Product Details
+
+* Nombre.
+* Precio.
+* Información.
+* Disponibilidad.
+* Adición al carrito.
+
+### Shopping Cart
+
+* Agregar productos.
+* Modificar cantidad.
+* Eliminar productos.
+* Recalcular total.
+* Validar cantidades inválidas.
+
+### Checkout
+
+* Información del cliente.
+* Información de envío.
+* Campos requeridos.
+* Validaciones.
+
+### Payment
+
+* Pago aprobado.
+* Pago rechazado.
+* Manejo de errores.
+* Integración con Order.
+* Prevención de resultados inconsistentes.
+
+### Order
+
+* Creación.
+* Información.
+* Persistencia.
+* Integridad de datos.
+
+### Email Notification
+
+* Confirmación de orden.
+* Consistencia de información.
+* No enviar confirmación exitosa cuando la transacción falla.
+
+---
+
+## 4. Actividades QA In Scope
+
+### Requirements
+
+* Requirements Analysis.
+* Acceptance Criteria Review.
+* Requirement Gap identification.
+* Requirements Traceability.
 
 ### Functional Testing
 
-* User registration and login
-* Product catalog
-* Product details
-* Shopping cart
-* Checkout
-* Payment flow
-* Order creation
-* Order status
-* Email notification validation
+* Positive Testing.
+* Negative Testing.
+* Boundary Value Analysis.
+* Equivalence Partitioning.
+* Decision Tables.
+* Exploratory Testing.
 
 ### API Testing
 
-* REST API validation
-* HTTP methods
-* Request and response validation
-* Status code validation
-* Headers
-* Authentication
-* JSON validation
-* Negative testing
+* REST APIs.
+* HTTP Methods.
+* Request/Response.
+* Status Codes.
+* Headers.
+* Authentication.
+* JSON.
+* Error Handling.
+* Negative Testing.
 
 ### Database Testing
 
-* SQL data validation
-* CRUD validation
-* Data integrity
-* Relationship validation
-* Order and customer data verification
+* CRUD.
+* Persistence.
+* Relationships.
+* Referential Integrity.
+* Order Data.
+* UI/API/Database consistency.
 
 ### Automation
 
-* Web UI automation
-* API automation
-* Regression automation
-* Page Object Model
-* Test data management
-* Test reporting
-* Screenshots and evidence
-* Parallel test execution where applicable
+* Web Automation.
+* API Automation.
+* Regression Automation.
+* Smoke Automation.
+* Data-Driven Testing.
 
 ### CI/CD
 
-* Automated test execution through CI/CD
-* Build validation
-* Regression execution
-* Test artifacts
-* Quality gates
-* Release validation
+* Automated Test Execution.
+* Quality Gates.
+* Reports.
+* Artifacts.
+* Secrets Management.
 
-### Production Validation
+### Release
 
-* Production smoke testing
-* Critical-path validation
-* Post-deployment verification
-* Quality status reporting
+* Regression.
+* Release Checklist.
+* QA Recommendation.
+* Production Smoke.
 
-## 4. Out of Scope
+---
 
-The following activities are initially excluded from the project:
+## 5. Out of Scope actual
 
-* Development of the production e-commerce application
-* Real financial transactions
-* Management of real customer payment information
-* Production database modification
-* Full penetration testing
-* Hardware performance testing
-* Physical infrastructure testing
-* Business operations outside the defined e-commerce flow
+Mientras no exista una necesidad específica, quedan fuera:
 
-These exclusions may be reviewed if the project scope changes.
+* Desarrollo funcional de la plataforma.
+* Transacciones financieras reales.
+* Full Penetration Testing.
+* Hardware Testing.
+* Procesos externos no relacionados.
+* Pruebas destructivas en Production.
+* Uso de datos personales reales.
 
-## 5. Main Systems and Components
+---
 
-The QA project will validate the following components:
+## 6. Restricciones
 
-```text
-Web Application
-      ↓
-REST APIs
-      ↓
-Database
-      ↓
-Email Services
-      ↓
-CI/CD Pipeline
-      ↓
-Production Environment
-```
+El proyecto puede depender de:
 
-## 6. Main Deliverables
+* APIs públicas o ambientes de laboratorio.
+* Payment Sandbox o mocks.
+* Disponibilidad de infraestructura.
+* Herramientas gratuitas o de aprendizaje.
+* Datos sintéticos.
 
-The project will produce the following deliverables:
+---
 
-### Management
+## 7. Supuestos
 
-* Project Charter
-* Stakeholder Register
-* RACI Matrix
-* Project Scope
-* Risk Register
-* Project Plan
+Se asume que:
 
-### QA Documentation
+* Los requisitos serán refinados progresivamente.
+* QA tendrá acceso a ambientes necesarios.
+* Los datos utilizados serán sintéticos.
+* Las APIs dispondrán de documentación suficiente.
+* Los cambios de alcance serán documentados.
 
-* Test Strategy
-* Test Plan
-* Test Scenarios
-* Test Cases
-* Requirements Traceability Matrix
-* Defect Reports
-* Test Execution Reports
-* Release Checklist
-* Go/No-Go Recommendation
+---
 
-### Automation
+## 8. Control del alcance
 
-* Automation framework
-* Automated test suites
-* Test data
-* Configuration management
-* Automation reports
-* CI/CD pipeline configuration
+Las nuevas funcionalidades no deberán incorporarse silenciosamente.
 
-### Quality Evidence
+Se utilizará:
 
-* Screenshots
-* Execution results
-* Logs
-* Test reports
-* Defect evidence
-* CI/CD artifacts
-* Production smoke results
+Change Request
+     ↓
+Impact Analysis
+     ↓
+Approval
+     ↓
+Scope Update
+     ↓
+Requirements Update
+     ↓
+Test Impact
 
-## 7. Assumptions
+El proceso completo está definido en:
 
-The project assumes that:
+`management/change-management.md`
 
-1. Requirements are available and approved before testing begins.
-2. Test environments are available when required.
-3. Test data can be created and maintained.
-4. APIs and application components are accessible to the QA team.
-5. Defects can be reported and tracked.
-6. Development and QA teams collaborate during the testing lifecycle.
-7. CI/CD infrastructure is available for automation execution.
+---
 
-## 8. Constraints
+## 9. Criterio de aceptación del alcance
 
-Potential project constraints include:
+El alcance se considera suficientemente definido cuando:
 
-* Limited testing time
-* Limited test environments
-* Dependencies on development teams
-* Availability of test data
-* Third-party service dependencies
-* Changes in requirements
-* Automation maintenance effort
-
-## 9. Scope Change Management
-
-Any proposed scope change must be evaluated according to its potential impact on:
-
-* Requirements
-* Testing effort
-* Automation effort
-* Schedule
-* Resources
-* Risks
-* Quality
-* Release date
-
-Significant changes must be reviewed and approved by the appropriate project stakeholders.
-
-## 10. Scope Success Criteria
-
-The scope will be considered successfully managed when:
-
-* In-scope functionality is clearly identified.
-* Out-of-scope activities are documented.
-* Deliverables are defined.
-* Dependencies and assumptions are understood.
-* Scope changes are controlled.
-* QA activities remain aligned with project objectives.
-* Quality evidence is available for release decisions.
+* Las funcionalidades principales están identificadas.
+* Las actividades QA están identificadas.
+* Las exclusiones son conocidas.
+* Las restricciones están documentadas.
+* Existe un mecanismo de Change Management.
