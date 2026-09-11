@@ -1,234 +1,295 @@
-# Test Data Management — QA E-Commerce Platform
+# Estrategia de Datos de Prueba — QA E-Commerce Platform
 
-## 1. Purpose
+## 1. Propósito
 
-This document defines the strategy for creating, managing, protecting and maintaining test data for the QA E-Commerce Platform.
+Este documento define la estrategia para crear, utilizar, mantener y limpiar Test Data dentro del proyecto.
 
-The objective is to ensure that test execution is repeatable, isolated, traceable and suitable for automation.
-
----
-
-## 2. Test Data Principles
-
-Test data should be:
-
-* Predictable
-* Reusable when appropriate
-* Isolated between test executions
-* Easy to create
-* Easy to reset
-* Non-sensitive
-* Traceable
-* Suitable for automated execution
-
-Production-sensitive data must not be copied into test environments without appropriate protection and authorization.
+La Test Data debe permitir ejecuciones predecibles, repetibles y seguras.
 
 ---
 
-## 3. Test Data Categories
+## 2. Principios
 
-| Category    | Example                             |
-| ----------- | ----------------------------------- |
-| Valid       | Registered active user              |
-| Invalid     | Invalid password                    |
-| Boundary    | Quantity = 0 or 1                   |
-| Negative    | Failed payment response             |
-| Integration | Valid order for database validation |
-| E2E         | User + product + payment + order    |
-| Security    | Unauthorized session                |
+La Test Data debe ser:
 
----
-
-# 4. Authentication Test Data
-
-| Data ID     | Username         | Password         | State          | Purpose                   |
-| ----------- | ---------------- | ---------------- | -------------- | ------------------------- |
-| TD-AUTH-001 | valid_user       | valid_password   | Active         | Successful authentication |
-| TD-AUTH-002 | valid_user       | invalid_password | Active         | Invalid password          |
-| TD-AUTH-003 | nonexistent_user | test_password    | Not Registered | Invalid account           |
-| TD-AUTH-004 | Empty            | valid_password   | N/A            | Required username         |
-| TD-AUTH-005 | valid_user       | Empty            | N/A            | Required password         |
-| TD-AUTH-006 | Empty            | Empty            | N/A            | Required credentials      |
+* Predecible.
+* Reutilizable cuando sea apropiado.
+* Aislada cuando sea posible.
+* Fácil de crear.
+* Fácil de resetear.
+* No sensible.
+* Trazable.
+* Adecuada para Automation.
 
 ---
 
-# 5. Product Test Data
+## 3. Authentication Data
 
-| Data ID     | Product   |  Price | Stock | Purpose                    |
-| ----------- | --------- | -----: | ----: | -------------------------- |
-| TD-PROD-001 | Product A | 100.00 |    10 | Standard available product |
-| TD-PROD-002 | Product B |  50.00 |     5 | Multi-product cart         |
-| TD-PROD-003 | Product C |  75.00 |     0 | Out-of-stock validation    |
+| ID          | Tipo    | Descripción                |
+| ----------- | ------- | -------------------------- |
+| TD-AUTH-001 | Valid   | Usuario existente y activo |
+| TD-AUTH-002 | Invalid | Password incorrecto        |
+| TD-AUTH-003 | Invalid | Username inexistente       |
+| TD-AUTH-004 | Invalid | Username vacío             |
+| TD-AUTH-005 | Invalid | Password vacío             |
+| TD-AUTH-006 | Invalid | Username y Password vacíos |
 
----
-
-# 6. Shopping Cart Test Data
-
-| Data ID     | Product   | Quantity | Expected Classification           |
-| ----------- | --------- | -------: | --------------------------------- |
-| TD-CART-001 | Product A |       -1 | Invalid                           |
-| TD-CART-002 | Product A |        0 | Boundary / Requires business rule |
-| TD-CART-003 | Product A |        1 | Minimum valid                     |
-| TD-CART-004 | Product A |        2 | Valid                             |
-| TD-CART-005 | Product A |        3 | Valid                             |
+Nunca almacenar Password reales en Git.
 
 ---
 
-# 7. Checkout Test Data
+## 4. Product Data
 
-| Data ID    | Customer | Shipping | Cart      | Expected |
-| ---------- | -------- | -------- | --------- | -------- |
-| TD-CHK-001 | Valid    | Valid    | Has Items | Continue |
-| TD-CHK-002 | Missing  | Valid    | Has Items | Reject   |
-| TD-CHK-003 | Valid    | Missing  | Has Items | Reject   |
-| TD-CHK-004 | Invalid  | Valid    | Has Items | Reject   |
-| TD-CHK-005 | Valid    | Invalid  | Has Items | Reject   |
-| TD-CHK-006 | Valid    | Valid    | Empty     | Reject   |
+| ID          | Producto  | Precio | Stock |
+| ----------- | --------- | -----: | ----: |
+| TD-PROD-001 | Product A |    100 |    10 |
+| TD-PROD-002 | Product B |     50 |     5 |
+| TD-PROD-003 | Product C |     75 |     0 |
 
----
-
-# 8. Payment Test Data
-
-| Data ID    | Payment Response     | Expected Transaction            |
-| ---------- | -------------------- | ------------------------------- |
-| TD-PAY-001 | Approved             | Continue                        |
-| TD-PAY-002 | Declined             | Stop                            |
-| TD-PAY-003 | Timeout              | Requires recovery rule          |
-| TD-PAY-004 | Duplicate submission | Requires idempotency validation |
+Estos valores son Test Data controlados para ejercicios y diseño.
 
 ---
 
-# 9. Order Test Data
+## 5. Cart Data
 
-| Data ID    | Scenario            | Expected Result               |
-| ---------- | ------------------- | ----------------------------- |
-| TD-ORD-001 | Successful payment  | Order created                 |
-| TD-ORD-002 | Failed payment      | No successful order           |
-| TD-ORD-003 | Persistence failure | Recovery behavior required    |
-| TD-ORD-004 | Duplicate request   | No unintended duplicate order |
+Valores conocidos:
+
+| Valor | Clasificación              |
+| ----: | -------------------------- |
+|    -1 | Invalid                    |
+|     0 | Boundary / Requirement Gap |
+|     1 | Minimum Valid conocido     |
+|     2 | Valid                      |
+|     3 | Valid                      |
+
+La cantidad máxima no está definida.
+
+Por lo tanto:
+
+Maximum Quantity = Requirement Gap
+
+No debe inventarse un máximo sin aprobación.
 
 ---
 
-# 10. Test Data Lifecycle
+## 6. Checkout Data
 
-```text id="tdm-lifecycle"
+| ID         | Descripción                 |
+| ---------- | --------------------------- |
+| TD-CHK-001 | Customer + Shipping válidos |
+| TD-CHK-002 | Customer faltante           |
+| TD-CHK-003 | Shipping faltante           |
+| TD-CHK-004 | Customer inválido           |
+| TD-CHK-005 | Shipping inválido           |
+| TD-CHK-006 | Cart vacío                  |
+
+---
+
+## 7. Payment Data
+
+| ID         | Caso                               |
+| ---------- | ---------------------------------- |
+| TD-PAY-001 | Approved                           |
+| TD-PAY-002 | Declined                           |
+| TD-PAY-003 | Timeout / Requirement Gap          |
+| TD-PAY-004 | Duplicate Submission / Idempotency |
+
+Los detalles reales dependerán del Payment Sandbox o mock utilizado.
+
+---
+
+## 8. Order Data
+
+Casos necesarios:
+
+* Successful Order.
+* Failed Payment → No Successful Order.
+* Persistence Failure.
+* Duplicate Request.
+* Order con múltiples productos.
+* Order con cantidades diferentes.
+
+---
+
+## 9. Data Lifecycle
+
+La Test Data deberá seguir:
+
 Create
-  ↓
+   ↓
 Prepare
-  ↓
-Execute Test
-  ↓
+   ↓
+Execute
+   ↓
 Validate
-  ↓
+   ↓
 Clean / Reset
-```
-
-Test data should not create dependencies between independent automated tests.
-
-For example:
-
-```text id="tdm-bad"
-TC-001 creates User A
-      ↓
-TC-002 requires User A
-      ↓
-TC-003 deletes User A
-```
-
-This creates fragile test dependency.
-
-Preferred model:
-
-```text id="tdm-good"
-TC-001 → creates or retrieves its own data
-TC-002 → creates or retrieves its own data
-TC-003 → creates or retrieves its own data
-```
 
 ---
 
-# 11. Test Data Isolation
+## 10. Test Independence
 
-Automated tests should avoid sharing mutable test data where possible.
+Los Test Cases deben evitar depender unos de otros.
 
-Recommended strategies include:
+Evitar:
 
-* Unique identifiers
-* Dedicated test accounts
-* API-based setup
-* Database setup scripts
-* Fixtures
-* Factory methods
-* Cleanup routines
-* Environment reset processes
+TC-002 necesita que TC-001 haya terminado correctamente.
 
-Example identifier pattern:
+Preferir:
 
-```text id="tdm-id"
-qa_user_<timestamp>
-qa_order_<unique-id>
-```
+Cada Test Case prepara o recupera su propio estado.
 
 ---
 
-# 12. Sensitive Data Rules
+## 11. Data Isolation
 
-Test data should avoid:
+Opciones:
 
-* Real passwords
-* Real payment information
-* Real customer personal information
-* Production credentials
-* Production access tokens
-* Confidential production records
-
-Preferred approach:
-
-```text id="tdm-sensitive"
-Synthetic Data
-Masked Data
-Dedicated Test Accounts
-Mock Payment Data
-```
+* Unique IDs.
+* Dedicated Test Accounts.
+* API Setup.
+* Database Seeds.
+* Fixtures.
+* Factories.
+* Cleanup hooks.
 
 ---
 
-# 13. Automation Data Strategy
+## 12. Data para Web Automation
 
-Different automation layers may use different data strategies.
+Se podrán utilizar:
 
-| Layer       | Preferred Strategy            |
-| ----------- | ----------------------------- |
-| UI          | Fixtures / API setup          |
-| API         | JSON payloads / factories     |
-| Database    | Seed scripts                  |
-| E2E         | Controlled integrated dataset |
-| Performance | Generated datasets            |
+* Fixtures.
+* JSON files.
+* Factories.
+* Environment variables.
+* API setup.
 
----
+Ejemplo conceptual:
 
-# 14. Test Data Risks
-
-| Risk                         | Impact                 | Mitigation            |
-| ---------------------------- | ---------------------- | --------------------- |
-| Shared test data             | Flaky tests            | Isolated datasets     |
-| Data modified by other tests | Unstable results       | Unique data           |
-| Production data exposure     | Security risk          | Synthetic data        |
-| Data not reset               | False failures         | Cleanup strategy      |
-| Hard-coded credentials       | Security / maintenance | Environment variables |
-| Duplicate records            | Execution failures     | Unique identifiers    |
+fixtures/
+├── users.json
+├── products.json
+├── checkout.json
+└── payments.json
 
 ---
 
-# 15. Completion Criteria
+## 13. Data para API Testing
 
-Test data management is considered ready when:
+Puede utilizarse:
 
-* Critical test cases have defined data.
-* Positive and negative datasets exist.
-* Boundary data is identified.
-* Sensitive production data is avoided.
-* Test isolation rules are defined.
-* Cleanup strategy is documented.
-* Automation data strategy is defined.
-* Required environment variables are identified.
+* JSON payloads.
+* Environment Variables.
+* Dynamic IDs.
+* Data factories.
+
+Ejemplo:
+
+json
+{
+  "productId": 1001,
+  "quantity": 2
+}
+
+---
+
+## 14. Data para Database Testing
+
+Podrán utilizarse:
+
+* Seed scripts.
+* Temporary records.
+* Transaction-based cleanup.
+* Known IDs.
+
+Siempre que sea posible se deberá evitar afectar información compartida.
+
+---
+
+## 15. Data para E2E
+
+Un escenario E2E deberá contar con un dataset controlado para:
+
+User
+ ↓
+Product
+ ↓
+Cart
+ ↓
+Checkout
+ ↓
+Payment
+ ↓
+Order
+ ↓
+Database
+ ↓
+Notification
+
+---
+
+## 16. Performance Test Data
+
+Performance Testing puede requerir datos generados en volumen.
+
+Ejemplos:
+
+* 100 Users.
+* 1,000 Products.
+* 10,000 Orders.
+
+Estos números deberán ser definidos según los objetivos reales de Performance Testing.
+
+---
+
+## 17. Datos sensibles
+
+No se deben utilizar en el repositorio:
+
+* Password reales.
+* Credit Card reales.
+* Production Customer Data.
+* Authentication Tokens reales.
+* Personal Information real.
+* Secrets.
+
+---
+
+## 18. Environment Variables
+
+Datos sensibles o dependientes del ambiente deberán manejarse mediante variables.
+
+Ejemplos:
+
+TEST_USERNAME
+TEST_PASSWORD
+API_TOKEN
+BASE_URL
+API_URL
+
+---
+
+## 19. Riesgos de Test Data
+
+| Riesgo                   | Impacto                    |
+| ------------------------ | -------------------------- |
+| Shared Data              | Flaky Tests                |
+| Modified Data            | Resultados inconsistentes  |
+| Production Data Exposure | Security / Privacy         |
+| No Cleanup               | Contaminación del ambiente |
+| Hardcoded Credentials    | Security Risk              |
+| Duplicate IDs            | Conflictos                 |
+| Test Dependency          | Baja confiabilidad         |
+
+---
+
+## 20. Principio
+
+Stable Test Data
+       ↓
+Stable Tests
+       ↓
+Reliable Automation
+
+Una mala estrategia de Test Data puede producir falsos fallos y Flaky Tests.
