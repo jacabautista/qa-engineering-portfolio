@@ -1,266 +1,293 @@
 #!/usr/bin/env bash
 
-BASE_URL="https://dummyjson.com"
+# ========================================
+
+# CONFIGURATION
+
+# ========================================
+
+CONFIG_FILE="api/config/test.env"
+
+if [ ! -f "$CONFIG_FILE" ]; then
+echo "[ERROR] Configuration file not found: $CONFIG_FILE"
+exit 1
+fi
+
+source "$CONFIG_FILE"
+
+required_variables=(
+BASE_URL
+PRODUCT_ID
+INVALID_PRODUCT_ID
+PRODUCT_TITLE
+PRODUCT_PRICE
+UPDATED_PRODUCT_TITLE
+)
+
+for variable in "${required_variables[@]}"; do
+if [ -z "${!variable}" ]; then
+echo "[ERROR] Required variable is missing: $variable"
+exit 1
+fi
+done
+
+# ========================================
+
+# DEPENDENCY VALIDATION
+
+# ========================================
+
+if ! command -v curl >/dev/null 2>&1; then
+echo "[ERROR] curl is not installed or not available in PATH"
+exit 1
+fi
+
+if ! command -v jq >/dev/null 2>&1; then
+echo "[ERROR] jq is not installed or not available in PATH"
+exit 1
+fi
+
+# ========================================
+
+# COUNTERS
+
+# ========================================
 
 PASSED=0
 FAILED=0
 
 # ========================================
-# REPORTING FUNCTIONS
+
+# TEMPORARY FILES
+
+# ========================================
+
+GET_RESPONSE="api/scripts/get-response.json"
+ERROR_RESPONSE="api/scripts/error-response.json"
+POST_RESPONSE="api/scripts/post-response.json"
+PATCH_RESPONSE="api/scripts/patch-response.json"
+DELETE_RESPONSE="api/scripts/delete-response.json"
+
+cleanup() {
+rm -f "$GET_RESPONSE" "$ERROR_RESPONSE" "$POST_RESPONSE" "$PATCH_RESPONSE" "$DELETE_RESPONSE"
+}
+
+trap cleanup EXIT
+
+# ========================================
+
+# REPORTING
+
 # ========================================
 
 pass_test() {
-  local message="$1"
-
-  echo "[PASS] $message"
-  PASSED=$((PASSED + 1))
+local message="$1"
+echo "[PASS] $message"
+PASSED=$((PASSED + 1))
 }
 
 fail_test() {
-  local message="$1"
-
-  echo "[FAIL] $message"
-  FAILED=$((FAILED + 1))
+local message="$1"
+echo "[FAIL] $message"
+FAILED=$((FAILED + 1))
 }
 
 # ========================================
-# ASSERTION FUNCTIONS
+
+# ASSERTIONS
+
 # ========================================
 
 assert_equals() {
-  local expected="$1"
-  local actual="$2"
-  local message="$3"
+local expected="$1"
+local actual="$2"
+local message="$3"
 
-  if [ "$expected" = "$actual" ]; then
-    pass_test "$message"
-  else
-    fail_test "$message | Expected: $expected | Actual: $actual"
-  fi
+if [ "$expected" = "$actual" ]; then
+pass_test "$message"
+else
+fail_test "$message | Expected: $expected | Actual: $actual"
+fi
 }
 
 assert_not_null() {
-  local actual="$1"
-  local message="$2"
+local actual="$1"
+local message="$2"
 
-  if [ -n "$actual" ] && [ "$actual" != "null" ]; then
-    pass_test "$message"
-  else
-    fail_test "$message | Actual value is null or empty"
-  fi
+if [ -n "$actual" ] && [ "$actual" != "null" ]; then
+pass_test "$message"
+else
+fail_test "$message | Actual value is null or empty"
+fi
 }
 
 # ========================================
+
 # TEST SUITE
+
 # ========================================
 
 echo "========================================"
 echo "       PRODUCT API TEST SUITE"
 echo "========================================"
+echo "Base URL: $BASE_URL"
 echo
 
 # ========================================
-# TEST 1 - GET existing product
+
+# TEST 1 - GET EXISTING PRODUCT
+
 # ========================================
 
-echo "TEST 1 - GET /products/1"
+echo "TEST 1 - GET /products/$PRODUCT_ID"
 
-STATUS_CODE=$(curl -s \
-  -o response.json \
-  -w "%{http_code}" \
-  "$BASE_URL/products/1")
+STATUS_CODE=$(curl -s -o "$GET_RESPONSE" -w "%{http_code}" "$BASE_URL/products/$PRODUCT_ID")
 
-ID=$(jq -r '.id' response.json)
-TITLE=$(jq -r '.title' response.json)
-PRICE=$(jq -r '.price' response.json)
-STOCK=$(jq -r '.stock' response.json)
-AVAILABILITY_STATUS=$(jq -r '.availabilityStatus' response.json)
-
-assert_equals "200" "$STATUS_CODE" "GET /products/1 - Status Code"
-assert_equals "1" "$ID" "GET /products/1 - Product ID"
-
-assert_not_null "$TITLE" "GET /products/1 - Title exists"
-assert_not_null "$PRICE" "GET /products/1 - Price exists"
-assert_not_null "$STOCK" "GET /products/1 - Stock exists"
-
-if [ "$STOCK" -gt 0 ]; then
-  assert_equals \
-    "In Stock" \
-    "$AVAILABILITY_STATUS" \
-    "GET /products/1 - Availability matches stock"
+if [ ! -f "$GET_RESPONSE" ]; then
+echo "[ERROR] GET response file was not created"
+exit 1
 fi
 
-rm -f response.json
+ID=$(jq -r '.id' "$GET_RESPONSE")
+TITLE=$(jq -r '.title' "$GET_RESPONSE")
+PRICE=$(jq -r '.price' "$GET_RESPONSE")
+STOCK=$(jq -r '.stock' "$GET_RESPONSE")
+AVAILABILITY_STATUS=$(jq -r '.availabilityStatus' "$GET_RESPONSE")
+
+assert_equals "200" "$STATUS_CODE" "GET /products/$PRODUCT_ID - Status Code"
+assert_equals "$PRODUCT_ID" "$ID" "GET /products/$PRODUCT_ID - Product ID"
+assert_not_null "$TITLE" "GET /products/$PRODUCT_ID - Title exists"
+assert_not_null "$PRICE" "GET /products/$PRODUCT_ID - Price exists"
+assert_not_null "$STOCK" "GET /products/$PRODUCT_ID - Stock exists"
+
+if [[ "$STOCK" =~ ^[0-9]+$ ]] && [ "$STOCK" -gt 0 ]; then
+assert_equals "In Stock" "$AVAILABILITY_STATUS" "GET /products/$PRODUCT_ID - Availability matches stock"
+fi
 
 echo
 
 # ========================================
-# TEST 2 - GET nonexistent product
+
+# TEST 2 - GET NONEXISTENT PRODUCT
+
 # ========================================
 
-echo "TEST 2 - GET /products/999999"
+echo "TEST 2 - GET /products/$INVALID_PRODUCT_ID"
 
-STATUS_CODE=$(curl -s \
-  -o error-response.json \
-  -w "%{http_code}" \
-  "$BASE_URL/products/999999")
+STATUS_CODE=$(curl -s -o "$ERROR_RESPONSE" -w "%{http_code}" "$BASE_URL/products/$INVALID_PRODUCT_ID")
 
-ERROR_MESSAGE=$(jq -r '.message' error-response.json)
+if [ ! -f "$ERROR_RESPONSE" ]; then
+echo "[ERROR] Negative GET response file was not created"
+exit 1
+fi
 
-assert_equals \
-  "404" \
-  "$STATUS_CODE" \
-  "GET /products/999999 - Status Code"
+ERROR_MESSAGE=$(jq -r '.message' "$ERROR_RESPONSE")
 
-assert_equals \
-  "Product with id '999999' not found" \
-  "$ERROR_MESSAGE" \
-  "GET /products/999999 - Error message"
-
-rm -f error-response.json
+assert_equals "404" "$STATUS_CODE" "GET /products/$INVALID_PRODUCT_ID - Status Code"
+assert_equals "Product with id '$INVALID_PRODUCT_ID' not found" "$ERROR_MESSAGE" "GET /products/$INVALID_PRODUCT_ID - Error message"
 
 echo
 
 # ========================================
-# TEST 3 - POST product
+
+# TEST 3 - POST PRODUCT
+
 # ========================================
 
 echo "TEST 3 - POST /products/add"
 
-STATUS_CODE=$(curl -s \
-  -o post-response.json \
-  -w "%{http_code}" \
-  -X POST \
-  "$BASE_URL/products/add" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "QA Automation Laptop",
-    "price": 1500
-  }')
+POST_BODY=$(jq -n --arg title "$PRODUCT_TITLE" --argjson price "$PRODUCT_PRICE" '{title: $title, price: $price}')
 
-CREATED_ID=$(jq -r '.id' post-response.json)
-CREATED_TITLE=$(jq -r '.title' post-response.json)
-CREATED_PRICE=$(jq -r '.price' post-response.json)
+STATUS_CODE=$(curl -s -o "$POST_RESPONSE" -w "%{http_code}" -X POST "$BASE_URL/products/add" -H "Content-Type: application/json" -d "$POST_BODY")
 
-assert_equals \
-  "201" \
-  "$STATUS_CODE" \
-  "POST /products/add - Status Code"
+if [ ! -f "$POST_RESPONSE" ]; then
+echo "[ERROR] POST response file was not created"
+exit 1
+fi
 
-assert_not_null \
-  "$CREATED_ID" \
-  "POST /products/add - Generated ID"
+CREATED_ID=$(jq -r '.id' "$POST_RESPONSE")
+CREATED_TITLE=$(jq -r '.title' "$POST_RESPONSE")
+CREATED_PRICE=$(jq -r '.price' "$POST_RESPONSE")
 
-assert_equals \
-  "QA Automation Laptop" \
-  "$CREATED_TITLE" \
-  "POST /products/add - Title"
-
-assert_equals \
-  "1500" \
-  "$CREATED_PRICE" \
-  "POST /products/add - Price"
-
-rm -f post-response.json
+assert_equals "201" "$STATUS_CODE" "POST /products/add - Status Code"
+assert_not_null "$CREATED_ID" "POST /products/add - Generated ID"
+assert_equals "$PRODUCT_TITLE" "$CREATED_TITLE" "POST /products/add - Title"
+assert_equals "$PRODUCT_PRICE" "$CREATED_PRICE" "POST /products/add - Price"
 
 echo
 
 # ========================================
-# TEST 4 - PATCH product
+
+# TEST 4 - PATCH PRODUCT
+
 # ========================================
 
-echo "TEST 4 - PATCH /products/1"
+echo "TEST 4 - PATCH /products/$PRODUCT_ID"
 
-STATUS_CODE=$(curl -s \
-  -o patch-response.json \
-  -w "%{http_code}" \
-  -X PATCH \
-  "$BASE_URL/products/1" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "QA Updated Product"
-  }')
+PATCH_BODY=$(jq -n --arg title "$UPDATED_PRODUCT_TITLE" '{title: $title}')
 
-UPDATED_ID=$(jq -r '.id' patch-response.json)
-UPDATED_TITLE=$(jq -r '.title' patch-response.json)
-UPDATED_PRICE=$(jq -r '.price' patch-response.json)
+STATUS_CODE=$(curl -s -o "$PATCH_RESPONSE" -w "%{http_code}" -X PATCH "$BASE_URL/products/$PRODUCT_ID" -H "Content-Type: application/json" -d "$PATCH_BODY")
 
-assert_equals \
-  "200" \
-  "$STATUS_CODE" \
-  "PATCH /products/1 - Status Code"
+if [ ! -f "$PATCH_RESPONSE" ]; then
+echo "[ERROR] PATCH response file was not created"
+exit 1
+fi
 
-assert_equals \
-  "1" \
-  "$UPDATED_ID" \
-  "PATCH /products/1 - Product ID"
+UPDATED_ID=$(jq -r '.id' "$PATCH_RESPONSE")
+UPDATED_TITLE=$(jq -r '.title' "$PATCH_RESPONSE")
+UPDATED_PRICE=$(jq -r '.price' "$PATCH_RESPONSE")
 
-assert_equals \
-  "QA Updated Product" \
-  "$UPDATED_TITLE" \
-  "PATCH /products/1 - Updated title"
-
-assert_not_null \
-  "$UPDATED_PRICE" \
-  "PATCH /products/1 - Price preserved"
-
-rm -f patch-response.json
+assert_equals "200" "$STATUS_CODE" "PATCH /products/$PRODUCT_ID - Status Code"
+assert_equals "$PRODUCT_ID" "$UPDATED_ID" "PATCH /products/$PRODUCT_ID - Product ID"
+assert_equals "$UPDATED_PRODUCT_TITLE" "$UPDATED_TITLE" "PATCH /products/$PRODUCT_ID - Updated title"
+assert_not_null "$UPDATED_PRICE" "PATCH /products/$PRODUCT_ID - Price preserved"
 
 echo
 
 # ========================================
-# TEST 5 - DELETE product
+
+# TEST 5 - DELETE PRODUCT
+
 # ========================================
 
-echo "TEST 5 - DELETE /products/1"
+echo "TEST 5 - DELETE /products/$PRODUCT_ID"
 
-STATUS_CODE=$(curl -s \
-  -o delete-response.json \
-  -w "%{http_code}" \
-  -X DELETE \
-  "$BASE_URL/products/1")
+STATUS_CODE=$(curl -s -o "$DELETE_RESPONSE" -w "%{http_code}" -X DELETE "$BASE_URL/products/$PRODUCT_ID")
 
-DELETED_ID=$(jq -r '.id' delete-response.json)
-IS_DELETED=$(jq -r '.isDeleted' delete-response.json)
-DELETED_ON=$(jq -r '.deletedOn' delete-response.json)
+if [ ! -f "$DELETE_RESPONSE" ]; then
+echo "[ERROR] DELETE response file was not created"
+exit 1
+fi
 
-assert_equals \
-  "200" \
-  "$STATUS_CODE" \
-  "DELETE /products/1 - Status Code"
+DELETED_ID=$(jq -r '.id' "$DELETE_RESPONSE")
+IS_DELETED=$(jq -r '.isDeleted' "$DELETE_RESPONSE")
+DELETED_ON=$(jq -r '.deletedOn' "$DELETE_RESPONSE")
 
-assert_equals \
-  "1" \
-  "$DELETED_ID" \
-  "DELETE /products/1 - Product ID"
-
-assert_equals \
-  "true" \
-  "$IS_DELETED" \
-  "DELETE /products/1 - isDeleted"
-
-assert_not_null \
-  "$DELETED_ON" \
-  "DELETE /products/1 - deletedOn exists"
-
-rm -f delete-response.json
+assert_equals "200" "$STATUS_CODE" "DELETE /products/$PRODUCT_ID - Status Code"
+assert_equals "$PRODUCT_ID" "$DELETED_ID" "DELETE /products/$PRODUCT_ID - Product ID"
+assert_equals "true" "$IS_DELETED" "DELETE /products/$PRODUCT_ID - isDeleted"
+assert_not_null "$DELETED_ON" "DELETE /products/$PRODUCT_ID - deletedOn exists"
 
 echo
 
 # ========================================
-# TEST SUMMARY
+
+# SUMMARY
+
 # ========================================
+
+TOTAL=$((PASSED + FAILED))
 
 echo "========================================"
 echo "TEST SUMMARY"
 echo "========================================"
 echo "Passed: $PASSED"
 echo "Failed: $FAILED"
-echo "Total:  $((PASSED + FAILED))"
+echo "Total Assertions: $TOTAL"
 echo "========================================"
 
 if [ "$FAILED" -gt 0 ]; then
-  exit 1
-else
-  exit 0
+exit 1
 fi
+
+exit 0
