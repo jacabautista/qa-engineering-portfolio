@@ -24,16 +24,22 @@ STATUS_CODE=$(curl -s \
 ID=$(jq '.id' response.json)
 TITLE=$(jq -r '.title' response.json)
 PRICE=$(jq '.price' response.json)
+STOCK=$(jq '.stock' response.json)
+AVAILABILITY_STATUS=$(jq -r '.availabilityStatus' response.json)
 
 if [ "$STATUS_CODE" -eq 200 ] && \
    [ "$ID" -eq 1 ] && \
-   [ "$PRICE" != "null" ]; then
+   [ "$PRICE" != "null" ] && \
+   [ "$STOCK" != "null" ] && \
+   [ -n "$TITLE" ]; then
 
   echo "[PASS] GET /products/1"
   echo "       Status: $STATUS_CODE"
   echo "       ID: $ID"
   echo "       Title: $TITLE"
   echo "       Price: $PRICE"
+  echo "       Stock: $STOCK"
+  echo "       Availability: $AVAILABILITY_STATUS"
 
   PASSED=$((PASSED + 1))
 
@@ -43,8 +49,23 @@ else
   echo "       Status: $STATUS_CODE"
   echo "       ID: $ID"
   echo "       Price: $PRICE"
+  echo "       Stock: $STOCK"
+  echo "       Availability: $AVAILABILITY_STATUS"
 
   FAILED=$((FAILED + 1))
+
+fi
+
+if [ "$STOCK" -gt 0 ] && \
+   [ "$AVAILABILITY_STATUS" != "In Stock" ]; then
+
+  echo "[FAIL] Product availability is inconsistent"
+  FAILED=$((FAILED + 1))
+
+else
+
+  echo "[PASS] Product availability is consistent"
+  PASSED=$((PASSED + 1))
 
 fi
 
